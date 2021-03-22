@@ -46,7 +46,7 @@ screenSize = (height, width)
 screen = pygame.display.set_mode(screenSize)
 done = False
 
-velocity = 0.1
+velocity = 1
 
 coordX = len(map)//2
 coordY = len(map)//2

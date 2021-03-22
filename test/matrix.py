@@ -21,6 +21,7 @@ def getSubMatrix(matrix, coords, size, zoom):
     topLeftCorner : tuple of x and y of the sub matrice\n
     size : the n + to add to got the bottomRightCorner of sub matrix
     """
+    
     x, y = getTopLeftCorner(coords, size, zoom)
     print(x,y)
 
