@@ -14,13 +14,12 @@ on dezoom
 il faut stocker la map si on veut plus tard une camera
 """
 
-height = 100
-width = 100
+mapSize = (100, 100) #width, height
 
 """ Returns a circular gradient with values between 0 and 1 """
 def circularGradient():
-    x = linspace(-1/sqrt(2), 1/sqrt(2), width)[:, None]
-    y = linspace(-1/sqrt(2), 1/sqrt(2), height)[None, :]
+    x = linspace(-1/sqrt(2), 1/sqrt(2), mapSize[1])[:, None]
+    y = linspace(-1/sqrt(2), 1/sqrt(2), mapSize[0])[None, :]
     return sqrt(x ** 2 + y ** 2)  
 
 def bijection(map, mini, maxi):
@@ -44,23 +43,22 @@ def perlinMap():
     noise3 = PerlinNoise(octaves=12, seed=1)
     noise4 = PerlinNoise(octaves=24, seed=1)
 
-    map = zeros((height, width))
-    for i in range(height):
-        for j in range(width):
-            noise_val =          noise1([i/height, j/width])
-            noise_val += 1/2 *   noise2([i/height, j/width])
-            noise_val += 1/4 *   noise3([i/height, j/width])
-            noise_val += 1/8 *   noise4([i/height, j/width])
+    map = zeros((mapSize[1], mapSize[0]))
+    for i in range(mapSize[1]):
+        for j in range(mapSize[0]):
+            noise_val =          noise1([i/mapSize[1], j/mapSize[0]])
+            noise_val += 1/2 *   noise2([i/mapSize[1], j/mapSize[0]])
+            noise_val += 1/4 *   noise3([i/mapSize[1], j/mapSize[0]])
+            noise_val += 1/8 *   noise4([i/mapSize[1], j/mapSize[0]])
             map[i][j] = noise_val
     return map
 
 def generatePerlinMap():
     map = perlinMap()
-    map = map - 1 * circularGradient()
+    map = map - 2 * circularGradient()
     mini, maxi = minmax(map)
     map = bijection(map, mini, maxi)
     return map
-
 
 
 
