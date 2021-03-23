@@ -6,7 +6,7 @@ from Map import Map
 path = os.path.dirname(os.path.abspath(__file__))+"/../ui" #//REVIEW - Revoir ça, cherche plus propre
 sys.path.append(path)
 from Window import Window
-#from View import View
+#from View import View 
 #from Display import Display
 
 class GameLoop:
