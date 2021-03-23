@@ -1,7 +1,9 @@
 import sys, os
+import pygame
+
 from Player import Player
 from Map import Map
-path = os.path.dirname(os.path.abspath(__file__))+"/../ui" //REVIEW - Revoir ça, cherche plus propre
+path = os.path.dirname(os.path.abspath(__file__))+"/../ui" #//REVIEW - Revoir ça, cherche plus propre
 sys.path.append(path)
 from Window import Window
 #from View import View
@@ -9,8 +11,8 @@ from Window import Window
 
 class GameLoop:
     def __init__(self):
-        self.__player = Player()
-        self.__map = Map()
+        self.__map = Map((100,100))
+        self.__player = Player(self.__map.mapSize, 32)
         self.__window = Window()
         #self.__view = View()
         #self.__display = Display()
@@ -41,18 +43,19 @@ class GameLoop:
             if movementsKeys[pygame.K_LEFT]:
                 self.__player.moveLeft()
             if movementsKeys[pygame.K_UP]:
-                self.__player.move
+                self.__player.moveUp()
             if movementsKeys[pygame.K_DOWN]:
+                self.__player.moveDown()
                 
             
 
-            xOff = playerX % tileSize
-            yOff = playerY % tileSize
+            #xOff = playerX % tileSize
+            #yOff = playerY % tileSize
 
             #displayMap(map, xOff, yOff)
-            view = getViewMatrix(map, playerX, playerY, tileSize, viewSize)
-            displayMap(view, xOff, yOff)
-            displayPlayer(windowSize)
+            #view = getViewMatrix(map, playerX, playerY, tileSize, viewSize)
+            #displayMap(view, xOff, yOff)
+            #displayPlayer(windowSize)
 
             pygame.display.flip()
 
