@@ -8,7 +8,7 @@ def getViewMatrix(map, playerX, playerY, tileSize, viewSize):
     viewHeight = viewSize[0] // 2 + 1
     viewWidth = viewSize[1] // 2 + 1
 
-    print(indexX - viewWidth, indexX + viewWidth, indexY - viewHeight, indexY + viewHeight )
+    #print(indexX - viewWidth, indexX + viewWidth, indexY - viewHeight, indexY + viewHeight )
         
     return map[indexX - viewWidth : indexX + viewWidth, indexY - viewHeight : indexY + viewHeight]
 

@@ -32,30 +32,47 @@ def displayMap(map, xOff, yOff):
 def displayPlayer(windowSize):
     pygame.draw.rect(screen, "black", pygame.Rect(windowSize[0]//2, windowSize[1]//2, tileSize, tileSize))
 
-velocity = 5
+velocity = 1
 playerX = tileSize * mapSize[0] // 2 
 playerY = tileSize * mapSize[1] // 2 
 
 import sys, pygame
 
 pygame.init()
-screen = pygame.display.set_mode(windowSize, pygame.RESIZABLE)
+screen = pygame.display.set_mode(windowSize)
 done = False
 
 #displayMap est appelé lorsqu'un mouvement se passe sinon non
+
+movementsKeys = {
+    pygame.K_RIGHT:False,
+    pygame.K_LEFT:False,
+    pygame.K_UP:False,
+    pygame.K_DOWN:False
+}
+
+
+
 
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-            playerX += velocity
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-            playerX -= velocity
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-            playerY -= velocity
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
-            playerY += velocity
+        if event.type == pygame.KEYDOWN:
+            movementsKeys[event.key] = True
+        if event.type == pygame.KEYUP:
+            movementsKeys[event.key] = False
+        
+
+    if movementsKeys[pygame.K_RIGHT]:
+        playerX += velocity
+    if movementsKeys[pygame.K_LEFT]:
+        playerX -= velocity
+    if movementsKeys[pygame.K_UP]:
+        playerY -= velocity
+    if movementsKeys[pygame.K_DOWN]:
+        playerY += velocity
+    
 
     xOff = playerX % tileSize
     yOff = playerY % tileSize
