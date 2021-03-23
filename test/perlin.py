@@ -38,10 +38,10 @@ def minmax(map):
 
 
 def perlinMap():
-    noise1 = PerlinNoise(octaves=3, seed=1)
-    noise2 = PerlinNoise(octaves=6, seed=1)
-    noise3 = PerlinNoise(octaves=12, seed=1)
-    noise4 = PerlinNoise(octaves=24, seed=1)
+    noise1 = PerlinNoise(octaves=3, seed=None)
+    noise2 = PerlinNoise(octaves=6, seed=None)
+    noise3 = PerlinNoise(octaves=12, seed=None)
+    noise4 = PerlinNoise(octaves=24, seed=None)
 
     map = zeros((mapSize[1], mapSize[0]))
     for i in range(mapSize[1]):
@@ -68,10 +68,10 @@ def generatePerlinMap():
 
 
 #map = perlin() - circularGradient
-#map = generatePerlinMap()
+map = generatePerlinMap()
 #mini, maxi = minmax(map)
 #print(mini, maxi)
 #map = bijection(map, mini, maxi)
 #print(minmax(map))
-#plt.imshow(map, cmap='gray')
-#plt.show()
+plt.imshow(map, cmap='gray')
+plt.show()

@@ -1,5 +1,6 @@
 from perlin import *
 from matrix import getViewMatrix
+import time
 
 map = generatePerlinMap() 
 windowSize = (1080, 720) #width=x, height=y
@@ -50,9 +51,6 @@ movementsKeys = {
     pygame.K_UP:False,
     pygame.K_DOWN:False
 }
-
-
-
 
 while not done:
     for event in pygame.event.get():
