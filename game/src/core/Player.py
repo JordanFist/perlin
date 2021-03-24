@@ -19,6 +19,9 @@ class Player:
     def getOffSet(self):
         return (self.__X % Sprite.GROUND_TILE_SIZE, self.__Y % Sprite.GROUND_TILE_SIZE)
     
+    def getVelocity(self):
+        return self.__VELOCITY
+    
     def moveLeft(self):
         self.__X -= self.__VELOCITY
     

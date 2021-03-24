@@ -1,20 +1,17 @@
 from game.src.ui.Sprite import Sprite
-from math import ceil
-
+from game.src.ui.Display import Display
 class View:
     def __init__(self, windowSize):
-        self.viewSize = (ceil(windowSize[0] / Sprite.GROUND_TILE_SIZE), ceil(windowSize[1] / Sprite.GROUND_TILE_SIZE))
+        # we add 2 tiles on each side (thus 2 * offset) to prevent from buggy scrolling
+        self.viewSize = windowSize[0] // Sprite.GROUND_TILE_SIZE + 2 * Display.DISPLAY_OFFSET, windowSize[1] // Sprite.GROUND_TILE_SIZE + 2 * Display.DISPLAY_OFFSET
+        self.__deltaRow = self.viewSize[1] // 2
+        self.__deltaCol = self.viewSize[0] // 2 
 
     def get(self, map, playerIndex):
-        row = playerIndex[0]
-        col = playerIndex[1]
+        playerRow = playerIndex[0]
+        playerCol = playerIndex[1]
 
-        deltaRow = self.viewSize[1] // 2 + 1
-        deltaCol = self.viewSize[0] // 2 + 1 
+        topLeftCorner = (playerRow - self.__deltaRow, playerCol - self.__deltaCol)
 
-        
-
-        #print(row - deltaRow , row + deltaRow, col - deltaCol , col + deltaCol)
-
-        return map[row - deltaRow : row + deltaRow, col - deltaCol : col + deltaCol]
+        return map[topLeftCorner[0] : topLeftCorner[0] + self.viewSize[1], topLeftCorner[1] : topLeftCorner[1] + self.viewSize[0]]
 

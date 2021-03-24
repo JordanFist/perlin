@@ -5,6 +5,7 @@ from game.src.core.Map import Map
 from game.src.ui.Window import Window
 from game.src.ui.View import View
 from game.src.ui.Display import Display
+from game.src.ui.Sprite import Sprite
 
 class GameLoop:
     def __init__(self, seed=None):
@@ -32,16 +33,16 @@ class GameLoop:
     def __movePlayer(self, keysPressed):
         #print(self.__player.getPosition())
         res = False
-        if keysPressed[pygame.K_RIGHT] and self.__player.getPosition()[0] < self.__map.getSize()[0] - (self.__window.getSize()[0] // 2):
+        if keysPressed[pygame.K_RIGHT] and self.__player.getPosition()[0] + self.__player.getVelocity() < self.__map.getSize()[0] - (self.__window.getSize()[0] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveRight()
             res = True
-        if keysPressed[pygame.K_LEFT] and self.__player.getPosition()[0] > self.__window.getSize()[0] // 2:
+        if keysPressed[pygame.K_LEFT] and self.__player.getPosition()[0] - self.__player.getVelocity() > self.__window.getSize()[0] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveLeft()
             res = True
-        if keysPressed[pygame.K_UP] and self.__player.getPosition()[1] > self.__window.getSize()[1] // 2:
+        if keysPressed[pygame.K_UP] and self.__player.getPosition()[1] - self.__player.getVelocity() > self.__window.getSize()[1] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveUp()
             res = True
-        if keysPressed[pygame.K_DOWN] and self.__player.getPosition()[1] < self.__map.getSize()[1] - (self.__window.getSize()[1] // 2):
+        if keysPressed[pygame.K_DOWN] and self.__player.getPosition()[1] + self.__player.getVelocity() < self.__map.getSize()[1] - (self.__window.getSize()[1] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveDown()
             res = True
         return res
