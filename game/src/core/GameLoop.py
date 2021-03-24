@@ -1,64 +1,74 @@
-import sys, os
 import pygame
 
-from Player import Player
-from Map import Map
-path = os.path.dirname(os.path.abspath(__file__))+"/../ui" #//REVIEW - Revoir ça, cherche plus propre
-sys.path.append(path)
-from Window import Window
-#from View import View
-#from Display import Display
+from game.src.core.Player import Player
+from game.src.core.Map import Map
+from game.src.ui.Window import Window
+from game.src.ui.View import View
+from game.src.ui.Display import Display
 
 class GameLoop:
-    def __init__(self):
-        self.__map = Map((100,100))
-        self.__player = Player(self.__map.mapSize, 32)
+    def __init__(self, seed=None):
+        self.__map = Map(seed) 
+
+        self.__player = Player(self.__map.getSize())
+
         self.__window = Window()
-        #self.__view = View()
-        #self.__display = Display()
+        self.__view = View(self.__window.getSize())
+        self.__display = Display()
+
         self.run()
-    
+
+    def __isWindowClosed(self, event):
+        if event.type == pygame.QUIT:
+            return False
+        return True
+
+    def __isKeyPressed(self, event, keysPressed):
+        if event.type == pygame.KEYDOWN:
+            keysPressed[event.key] = True
+        if event.type == pygame.KEYUP:
+            keysPressed[event.key] = False
+
+    def __movePlayer(self, keysPressed):
+        #print(self.__player.getPosition())
+        res = False
+        if keysPressed[pygame.K_RIGHT] and self.__player.getPosition()[0] < self.__map.getSize()[0] - (self.__window.getSize()[0] // 2):
+            self.__player.moveRight()
+            res = True
+        if keysPressed[pygame.K_LEFT] and self.__player.getPosition()[0] > self.__window.getSize()[0] // 2:
+            self.__player.moveLeft()
+            res = True
+        if keysPressed[pygame.K_UP] and self.__player.getPosition()[1] > self.__window.getSize()[1] // 2:
+            self.__player.moveUp()
+            res = True
+        if keysPressed[pygame.K_DOWN] and self.__player.getPosition()[1] < self.__map.getSize()[1] - (self.__window.getSize()[1] // 2):
+            self.__player.moveDown()
+            res = True
+        return res
+
+    def __repaint(self):
+        view = self.__view.get(self.__map.get(), self.__player.getIndex())
+        self.__display.update(view, self.__window.screen, self.__player.getOffSet())
+
     def run(self):
-        #init variables
         running = True
-        movementsKeys = {
+
+        keysPressed = {
             pygame.K_RIGHT:False,
             pygame.K_LEFT:False,
             pygame.K_UP:False,
             pygame.K_DOWN:False
         }
 
+        self.__repaint()
+
         while running:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                if event.type == pygame.KEYDOWN:
-                    movementsKeys[event.key] = True
-                if event.type == pygame.KEYUP:
-                    movementsKeys[event.key] = False
+                running = self.__isWindowClosed(event)
+                self.__isKeyPressed(event, keysPressed)
                 
-
-            if movementsKeys[pygame.K_RIGHT]:
-                self.__player.moveRight()
-            if movementsKeys[pygame.K_LEFT]:
-                self.__player.moveLeft()
-            if movementsKeys[pygame.K_UP]:
-                self.__player.moveUp()
-            if movementsKeys[pygame.K_DOWN]:
-                self.__player.moveDown()
-                
-            
-
-            #xOff = playerX % tileSize
-            #yOff = playerY % tileSize
-
-            #displayMap(map, xOff, yOff)
-            #view = getViewMatrix(map, playerX, playerY, tileSize, viewSize)
-            #displayMap(view, xOff, yOff)
-            #displayPlayer(windowSize)
+            hasMoved = self.__movePlayer(keysPressed)
+            if (hasMoved):
+                self.__repaint()
 
             pygame.display.flip()
-
-
-
-a = GameLoop()
