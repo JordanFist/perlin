@@ -31,7 +31,6 @@ class GameLoop:
             keysPressed[event.key] = False
 
     def __movePlayer(self, keysPressed):
-        #print(self.__player.getPosition())
         res = False
         if keysPressed[pygame.K_RIGHT] and self.__player.getPosition()[0] + self.__player.getVelocity() < self.__map.getSize()[0] - (self.__window.getSize()[0] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveRight()
@@ -49,7 +48,7 @@ class GameLoop:
 
     def __repaint(self):
         view = self.__view.get(self.__map.get(), self.__player.getIndex())
-        self.__display.update(view, self.__window.screen, self.__player.getOffSet())
+        self.__display.update(view, self.__window.getScreen(), self.__player.getOffSet())
 
     def run(self):
         running = True
@@ -73,3 +72,4 @@ class GameLoop:
                 self.__repaint()
 
             pygame.display.flip()
+            self.__window.clock()
