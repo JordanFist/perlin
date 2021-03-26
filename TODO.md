@@ -12,7 +12,7 @@ Objectifs pour une V0
 
 3. Poser un sprite sur la map qui est capable de se deplacer
 
-4. Creer une camera qui fait bouger le background
+4. Creer une camera qui fait bouger le background 
 
 
 Problemes d'optimisation

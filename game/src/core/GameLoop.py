@@ -32,16 +32,16 @@ class GameLoop:
 
     def __movePlayer(self, keysPressed):
         res = False
-        if keysPressed[pygame.K_RIGHT] and self.__player.getPosition()[0] + self.__player.getVelocity() < self.__map.getSize()[0] - (self.__window.getSize()[0] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
+        if keysPressed[pygame.K_d] and self.__player.getPosition()[0] + self.__player.getVelocity() < self.__map.getSize()[0] - (self.__window.getSize()[0] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveRight()
             res = True
-        if keysPressed[pygame.K_LEFT] and self.__player.getPosition()[0] - self.__player.getVelocity() > self.__window.getSize()[0] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
+        if keysPressed[pygame.K_q] and self.__player.getPosition()[0] - self.__player.getVelocity() > self.__window.getSize()[0] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveLeft()
             res = True
-        if keysPressed[pygame.K_UP] and self.__player.getPosition()[1] - self.__player.getVelocity() > self.__window.getSize()[1] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
+        if keysPressed[pygame.K_z] and self.__player.getPosition()[1] - self.__player.getVelocity() > self.__window.getSize()[1] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveUp()
             res = True
-        if keysPressed[pygame.K_DOWN] and self.__player.getPosition()[1] + self.__player.getVelocity() < self.__map.getSize()[1] - (self.__window.getSize()[1] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
+        if keysPressed[pygame.K_s] and self.__player.getPosition()[1] + self.__player.getVelocity() < self.__map.getSize()[1] - (self.__window.getSize()[1] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
             self.__player.moveDown()
             res = True
         return res
@@ -54,10 +54,10 @@ class GameLoop:
         running = True
 
         keysPressed = {
-            pygame.K_RIGHT:False,
-            pygame.K_LEFT:False,
-            pygame.K_UP:False,
-            pygame.K_DOWN:False
+            pygame.K_d:False,
+            pygame.K_q:False,
+            pygame.K_z:False,
+            pygame.K_s:False
         }
 
         self.__repaint()
