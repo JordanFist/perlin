@@ -24,6 +24,7 @@ class SpriteStore:
 
 """a = Sprite(32)
 
+
 pygame.init()
 
 ecran = pygame.display.set_mode((500,500))

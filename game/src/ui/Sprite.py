@@ -1,7 +1,7 @@
 import pygame
 
 class Sprite:
-    GROUND_TILE_SIZE = 64
+    GROUND_TILE_SIZE = 32
 
     DEEP_WATER = 0
     SHALLOW_WATER = 1
