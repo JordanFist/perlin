@@ -1,0 +1,11 @@
+game/__pycache__/*
+
+game/test/__pycache__/*
+
+.vscode/*
+
+game/src/__pycache__/*
+game/src/core/__pycache__/*
+
+game/src/ui/__pycache__/*
+

@@ -6,6 +6,7 @@ from game.src.ui.Window import Window
 from game.src.ui.View import View
 from game.src.ui.Display import Display
 from game.src.ui.Sprite import Sprite
+from game.src.ui.SpriteStore import SpriteStore
 
 class GameLoop:
     def __init__(self, seed=None):
@@ -16,6 +17,7 @@ class GameLoop:
         self.__window = Window()
         self.__view = View(self.__window.getSize())
         self.__display = Display()
+        self.__spriteStore = SpriteStore()
 
         self.run()
 
@@ -48,7 +50,7 @@ class GameLoop:
 
     def __repaint(self):
         view = self.__view.get(self.__map.get(), self.__player.getIndex())
-        self.__display.update(view, self.__window.getScreen(), self.__player.getOffSet())
+        self.__display.update(view, self.__window.getScreen(), self.__player.getOffSet(), self.__spriteStore)
 
     def run(self):
         running = True

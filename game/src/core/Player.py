@@ -2,7 +2,7 @@ from game.src.ui.Sprite import Sprite
 
 class Player:
     def __init__(self, mapSize):
-        self.__VELOCITY = 1
+        self.__VELOCITY = 5
 
         self.__X  = mapSize[0] // 2
         self.__Y = mapSize[1] // 2

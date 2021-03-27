@@ -1,7 +1,7 @@
 import pygame
 
 class Window:
-    FPS = 60
+    FPS = 244
 
     def __init__(self):
         self.__height = 720

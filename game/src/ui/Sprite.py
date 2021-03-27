@@ -1,12 +1,18 @@
-<<<<<<< HEAD
 import pygame
 
-class Sprite(pygame.sprite.Sprite):
-    GROUND_TILE_SIZE = 32
-=======
 class Sprite:
-    GROUND_TILE_SIZE = 80
->>>>>>> 5af52f667449e0e914c8501e5b0ada740d40332c
+    GROUND_TILE_SIZE = 64
+
+    DEEP_WATER = 0
+    SHALLOW_WATER = 1
+    SAND = 2
+    GRASS = 3
 
     def __init__(self, path):
-        pass
+        self.__image = pygame.image.load(path).convert_alpha()
+        #self.__image = pygame.transform.scale(self.__image, (self.GROUND_TILE_SIZE, self.GROUND_TILE_SIZE)) TODO Gérer les sizes pour "zoomer"
+    
+    def get(self):
+        return self.__image
+    
+

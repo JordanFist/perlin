@@ -68,10 +68,10 @@ def generatePerlinMap():
 
 
 #map = perlin() - circularGradient
-map = generatePerlinMap()
+#map = generatePerlinMap()
 #mini, maxi = minmax(map)
 #print(mini, maxi)
 #map = bijection(map, mini, maxi)
 #print(minmax(map))
-plt.imshow(map, cmap='gray')
-plt.show()
+#plt.imshow(map, cmap='gray')
+#plt.show()
