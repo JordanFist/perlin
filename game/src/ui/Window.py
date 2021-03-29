@@ -2,17 +2,20 @@ import pygame
 
 class Window:
     FPS = 244
+    WIDTH = 1080
+    HEIGHT = 720
 
     def __init__(self):
-        self.__height = 720
-        self.__width = 1080
         pygame.init()
-        self.__screen = pygame.display.set_mode((self.__width, self.__height))
+        pygame.display.set_caption("Perlin")
+        pygame.mouse.set_visible(False)
+        
+        self.__screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         self.__clock = pygame.time.Clock()
 
-    """ Returns window size in pixel """
-    def getSize(self):
-        return (self.__width, self.__height)
+    #""" Returns window size in pixel """
+    #def getSize(self):
+    #    return (self.__width, self.__height)
 
     """ This clock ensures to have FPS Frame Per Second"""
     def clock(self):

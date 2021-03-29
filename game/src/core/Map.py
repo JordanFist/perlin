@@ -1,7 +1,7 @@
 from numpy import linspace, sqrt, inf, zeros
 from perlin_noise import PerlinNoise
+from game.src.core.TilesEnum import TilesEnum
 from game.src.ui.Sprite import Sprite
-
 
 class Map:
     def __init__(self, seed=None):
@@ -19,7 +19,7 @@ class Map:
     """ Returns the size of the map in pixel """
     def getSize(self):
         return (self.__mapSize[0] * Sprite.GROUND_TILE_SIZE, self.__mapSize[1] * Sprite.GROUND_TILE_SIZE)
-    
+
     def __generatePerlinMap(self):
         self.__perlinMap()
         self.__map = self.__map - self.__GRADIENT_FACTOR * self.__circularGradient()

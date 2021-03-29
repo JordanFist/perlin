@@ -2,8 +2,12 @@ import pygame
 
 from game.src.core.Player import Player
 from game.src.core.Map import Map
+from game.src.core.View import View
+from game.src.core.TilesEnum import TilesEnum
+from game.src.core.Direction import Direction
+
+
 from game.src.ui.Window import Window
-from game.src.ui.View import View
 from game.src.ui.Display import Display
 from game.src.ui.Sprite import Sprite
 from game.src.ui.SpriteStore import SpriteStore
@@ -15,8 +19,9 @@ class GameLoop:
         self.__player = Player(self.__map.getSize())
 
         self.__window = Window()
-        self.__view = View(self.__window.getSize())
+        self.__view = View()
         self.__display = Display()
+
         self.__spriteStore = SpriteStore()
 
         self.run()
@@ -32,44 +37,50 @@ class GameLoop:
         if event.type == pygame.KEYUP:
             keysPressed[event.key] = False
 
-    def __movePlayer(self, keysPressed):
-        res = False
-        if keysPressed[pygame.K_d] and self.__player.getPosition()[0] + self.__player.getVelocity() < self.__map.getSize()[0] - (self.__window.getSize()[0] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
-            self.__player.moveRight()
-            res = True
-        if keysPressed[pygame.K_q] and self.__player.getPosition()[0] - self.__player.getVelocity() > self.__window.getSize()[0] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
+    def __canWalk(self, direction):
+        row, col = self.__player.getNextIndex(direction)
+        return  self.__view.isInMap(self.__map, self.__player, direction) and \
+                TilesEnum.getID(self.__map.get()[row][col]) > TilesEnum.SHALLOW_WATER
+
+    def __playerInteraction(self, keysPressed):
+        hasMoved = False
+        if keysPressed[pygame.K_q] and self.__canWalk(Direction.LEFT):
             self.__player.moveLeft()
-            res = True
-        if keysPressed[pygame.K_z] and self.__player.getPosition()[1] - self.__player.getVelocity() > self.__window.getSize()[1] // 2 + Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
+            hasMoved = True
+        if keysPressed[pygame.K_d] and self.__canWalk(Direction.RIGHT):
+            self.__player.moveRight()
+            hasMoved = True
+        if keysPressed[pygame.K_z] and self.__canWalk(Direction.UP):
             self.__player.moveUp()
-            res = True
-        if keysPressed[pygame.K_s] and self.__player.getPosition()[1] + self.__player.getVelocity() < self.__map.getSize()[1] - (self.__window.getSize()[1] // 2) - Display.DISPLAY_OFFSET * Sprite.GROUND_TILE_SIZE:
+            hasMoved = True
+        if keysPressed[pygame.K_s] and self.__canWalk(Direction.DOWN):
             self.__player.moveDown()
-            res = True
-        return res
+            hasMoved = True
+        self.__player.adjustPosition()
+        return hasMoved
 
     def __repaint(self):
-        view = self.__view.get(self.__map.get(), self.__player.getIndex())
-        self.__display.update(view, self.__window.getScreen(), self.__player.getOffSet(), self.__spriteStore)
+        self.__view.setView(self.__map, self.__player)
+        self.__display.update(self.__view, self.__window, self.__player, self.__spriteStore)
 
     def run(self):
         running = True
 
         keysPressed = {
-            pygame.K_d:False,
             pygame.K_q:False,
+            pygame.K_d:False,
             pygame.K_z:False,
             pygame.K_s:False
         }
 
         self.__repaint()
 
-        while running:
+        while running:            
             for event in pygame.event.get():
                 running = self.__isWindowClosed(event)
                 self.__isKeyPressed(event, keysPressed)
                 
-            hasMoved = self.__movePlayer(keysPressed)
+            hasMoved = self.__playerInteraction(keysPressed)
             if (hasMoved):
                 self.__repaint()
 
