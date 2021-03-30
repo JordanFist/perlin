@@ -1,24 +1,27 @@
-from numpy import linspace, sqrt, inf, zeros
+from numpy import linspace, sqrt, inf, zeros, array
 from perlin_noise import PerlinNoise
-from game.src.core.TilesEnum import TilesEnum
 from game.src.ui.Sprite import Sprite
 
 class Map:
     def __init__(self, seed=None):
+        self.__MAP_SIZE = (100, 100)
         self.__GRADIENT_FACTOR = 2
 
-        self.__mapSize = (100, 100)
         self.__seed = seed
-        self.__map = zeros((self.__mapSize[0], self.__mapSize[1]))
+        self.__map = zeros((self.__MAP_SIZE[0], self.__MAP_SIZE[1]))
 
         self.__generatePerlinMap()
     
     def get(self):
         return self.__map
 
+    """ Returns the index of the position in the map (row, col) """
+    def getIndex(self, position):
+        return (position[1] // Sprite.GROUND_TILE_SIZE, position[0] // Sprite.GROUND_TILE_SIZE)
+
     """ Returns the size of the map in pixel """
     def getSize(self):
-        return (self.__mapSize[0] * Sprite.GROUND_TILE_SIZE, self.__mapSize[1] * Sprite.GROUND_TILE_SIZE)
+        return array([self.__MAP_SIZE[0] * Sprite.GROUND_TILE_SIZE, self.__MAP_SIZE[1] * Sprite.GROUND_TILE_SIZE])
 
     def __generatePerlinMap(self):
         self.__perlinMap()
@@ -27,8 +30,8 @@ class Map:
         self.__map = self.__bijection(mini, maxi)
     
     def __circularGradient(self):
-        x = linspace(-1/sqrt(2), 1/sqrt(2), self.__mapSize[1])[:, None]
-        y = linspace(-1/sqrt(2), 1/sqrt(2), self.__mapSize[0])[None, :]
+        x = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[1])[:, None]
+        y = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[0])[None, :]
         return sqrt(x ** 2 + y ** 2) 
 
     def __minMax(self):
@@ -41,8 +44,11 @@ class Map:
 
     def __bijection(self, mini, maxi):
         if (mini == maxi):
-            print("mini can't be equal to maxi")
+            print(  "Error: mini can't be equal to maxi",
+                    "\nFile: " + __file__,
+                    "\nFunction: bijection")            
             return None
+            
         return (self.__map - mini) / (maxi - mini)
 
     def __perlinMap(self):
@@ -51,11 +57,11 @@ class Map:
         noise3 = PerlinNoise(octaves = 12, seed = self.__seed)
         noise4 = PerlinNoise(octaves = 24, seed = self.__seed)
 
-        for i in range(self.__mapSize[1]):
-            for j in range(self.__mapSize[0]):
-                noise_val =  1   *   noise1([i/self.__mapSize[1], j/self.__mapSize[0]])
-                noise_val += 1/2 *   noise2([i/self.__mapSize[1], j/self.__mapSize[0]])
-                noise_val += 1/4 *   noise3([i/self.__mapSize[1], j/self.__mapSize[0]])
-                noise_val += 1/8 *   noise4([i/self.__mapSize[1], j/self.__mapSize[0]])
+        for i in range(self.__MAP_SIZE[1]):
+            for j in range(self.__MAP_SIZE[0]):
+                noise_val =  1   *   noise1([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
+                noise_val += 1/2 *   noise2([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
+                noise_val += 1/4 *   noise3([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
+                noise_val += 1/8 *   noise4([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
                 self.__map[i][j] = noise_val
 

@@ -14,15 +14,14 @@ from game.src.ui.SpriteStore import SpriteStore
 
 class GameLoop:
     def __init__(self, seed=None):
-        self.__map = Map(seed) 
-
-        self.__player = Player(self.__map.getSize())
-
         self.__window = Window()
-        self.__view = View()
         self.__display = Display()
+        self.__view = View()
 
+        self.__map = Map(seed) 
         self.__spriteStore = SpriteStore()
+        initialPositionPlayer = self.__map.getSize() // 2
+        self.__player = Player(self.__spriteStore.getPlayer(), initialPositionPlayer)
 
         self.run()
 
@@ -31,6 +30,13 @@ class GameLoop:
             return False
         return True
 
+    def __windowResized(self, event):
+        if event.type == pygame.VIDEORESIZE:
+            self.__window.resizeScreen(event.w, event.h)
+            self.__view.__init__()
+            return True
+        return False
+
     def __isKeyPressed(self, event, keysPressed):
         if event.type == pygame.KEYDOWN:
             keysPressed[event.key] = True
@@ -38,11 +44,14 @@ class GameLoop:
             keysPressed[event.key] = False
 
     def __canWalk(self, direction):
-        row, col = self.__player.getNextIndex(direction)
+        playerCorners = self.__player.getNextCorners(direction)
+        bottomLeftCorner = self.__map.getIndex(playerCorners[1])
+        bottomRightCorner = self.__map.getIndex(playerCorners[2])
         return  self.__view.isInMap(self.__map, self.__player, direction) and \
-                TilesEnum.getID(self.__map.get()[row][col]) > TilesEnum.SHALLOW_WATER
+                TilesEnum.getID(self.__map.get()[bottomLeftCorner[0]][bottomLeftCorner[1]]) > TilesEnum.SHALLOW_WATER and \
+                TilesEnum.getID(self.__map.get()[bottomRightCorner[0]][bottomRightCorner[1]]) > TilesEnum.SHALLOW_WATER
 
-    def __playerInteraction(self, keysPressed):
+    def __playerMoved(self, keysPressed):
         hasMoved = False
         if keysPressed[pygame.K_q] and self.__canWalk(Direction.LEFT):
             self.__player.moveLeft()
@@ -79,9 +88,10 @@ class GameLoop:
             for event in pygame.event.get():
                 running = self.__isWindowClosed(event)
                 self.__isKeyPressed(event, keysPressed)
+                if self.__windowResized(event):
+                    self.__repaint()
                 
-            hasMoved = self.__playerInteraction(keysPressed)
-            if (hasMoved):
+            if self.__playerMoved(keysPressed):
                 self.__repaint()
 
             pygame.display.flip()

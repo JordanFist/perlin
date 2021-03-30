@@ -1,6 +1,7 @@
 from game.src.ui.Sprite import Sprite
 
 class SpriteStore:
+    MAIN_CHARACTER = 0
 
     def __init__(self):
         self.__PATH = "game/resources/"
@@ -22,6 +23,9 @@ class SpriteStore:
 
     def get(self, spriteType, spriteNumber):
         return self.__store[spriteType][spriteNumber]
+
+    def getPlayer(self):
+        return self.__store["players"][self.MAIN_CHARACTER]
 
             
                     
