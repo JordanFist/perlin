@@ -24,6 +24,6 @@ class View:
     def isInMap(self, map, player, direction):
         nextPosition = player.getNextPosition(direction)
         return  (nextPosition[0] > Window.getWidth() // 2 + Display.BUFFER * Sprite.GROUND_TILE_SIZE) and \
-                (nextPosition[0] < map.getSize()[0] - (Window.getWidth() // 2) - Display.BUFFER * Sprite.GROUND_TILE_SIZE) and \
+                (nextPosition[0] < map.getSize()[1] - (Window.getWidth() // 2) - Display.BUFFER * Sprite.GROUND_TILE_SIZE) and \
                 (nextPosition[1] > Window.getHeight() // 2 + Display.BUFFER * Sprite.GROUND_TILE_SIZE) and \
-                (nextPosition[1] < map.getSize()[1] - (Window.getHeight() // 2) - Display.BUFFER * Sprite.GROUND_TILE_SIZE)
+                (nextPosition[1] < map.getSize()[0] - (Window.getHeight() // 2) - Display.BUFFER * Sprite.GROUND_TILE_SIZE)

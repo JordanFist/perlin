@@ -4,7 +4,7 @@ from game.src.ui.Sprite import Sprite
 
 class Map:
     def __init__(self, seed=None):
-        self.__MAP_SIZE = (100, 100)
+        self.__MAP_SIZE = (100, 120) #row, col
         self.__GRADIENT_FACTOR = 2
 
         self.__seed = seed
@@ -19,7 +19,7 @@ class Map:
     def getIndex(self, position):
         return (position[1] // Sprite.GROUND_TILE_SIZE, position[0] // Sprite.GROUND_TILE_SIZE)
 
-    """ Returns the size of the map in pixel """
+    """ Returns the size of the map in pixel (row, col) """
     def getSize(self):
         return array([self.__MAP_SIZE[0] * Sprite.GROUND_TILE_SIZE, self.__MAP_SIZE[1] * Sprite.GROUND_TILE_SIZE])
 
@@ -29,9 +29,10 @@ class Map:
         mini, maxi = self.__minMax()
         self.__map = self.__bijection(mini, maxi)
     
+    """ Returns a circular gradient between 0 and 1 """
     def __circularGradient(self):
-        x = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[1])[:, None]
-        y = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[0])[None, :]
+        x = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[0])[:, None]
+        y = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[1])[None, :]
         return sqrt(x ** 2 + y ** 2) 
 
     def __minMax(self):
@@ -57,11 +58,10 @@ class Map:
         noise3 = PerlinNoise(octaves = 12, seed = self.__seed)
         noise4 = PerlinNoise(octaves = 24, seed = self.__seed)
 
-        for i in range(self.__MAP_SIZE[1]):
-            for j in range(self.__MAP_SIZE[0]):
-                noise_val =  1   *   noise1([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
-                noise_val += 1/2 *   noise2([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
-                noise_val += 1/4 *   noise3([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
-                noise_val += 1/8 *   noise4([i/self.__MAP_SIZE[1], j/self.__MAP_SIZE[0]])
+        for i in range(self.__MAP_SIZE[0]):
+            for j in range(self.__MAP_SIZE[1]):
+                noise_val =  1   *   noise1([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
+                noise_val += 1/2 *   noise2([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
+                noise_val += 1/4 *   noise3([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
+                noise_val += 1/8 *   noise4([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
                 self.__map[i][j] = noise_val
-
