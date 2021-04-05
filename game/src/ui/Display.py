@@ -1,29 +1,15 @@
-import pygame
-from game.src.ui.Sprite import Sprite
-from game.src.core.TilesEnum import TilesEnum
-
 class Display:
-    BUFFER = 2
+    def __init__(self, window, camera, background, spriteStore):
+        self.__window = window
+        self.__camera = camera
+        self.__background = background
+        self.__spriteStore = spriteStore
 
-    """ Returns player offset (xOff, yOff) """
-    def __getOffSet(self, player):
-        return (int(player.getPosition()[0] % Sprite.GROUND_TILE_SIZE), int(player.getPosition()[1] % Sprite.GROUND_TILE_SIZE))
+    def update(self, player):
+        cameraPosition = self.__camera.get()
+        topLeft = self.__window.getScreen().get_rect(topleft = cameraPosition.toTuple())
+        self.__window.getScreen().blit(self.__background.get(), (0, 0), topLeft)
 
-    def update(self, view, window, player, spriteStore):
-        xOff, yOff = self.__getOffSet(player)
-        height = len(view.get())
-        width = len(view.get()[0])
-
-        for row in range(height):
-            for col in range(width):
-                value = view.get()[row][col]
-
-                groundSprite = spriteStore.get("grounds", TilesEnum.getID(value))
-                window.getScreen().blit(groundSprite.get(), ((col - self.BUFFER) * Sprite.GROUND_TILE_SIZE - xOff, (row - self.BUFFER) * Sprite.GROUND_TILE_SIZE - yOff))
-
-                playerSprite = spriteStore.getPlayer()
-                playerSprite.setPosition((Sprite.GROUND_TILE_SIZE * ((view.getViewSize()[0] - 2 * self.BUFFER) // 2), Sprite.GROUND_TILE_SIZE * ((view.getViewSize()[1] - 2 * self.BUFFER) // 2)))
-                window.getScreen().blit(playerSprite.get(), playerSprite.getRect())
-
-
-    
+        playerSprite = self.__spriteStore.getPlayer()
+        playerSprite.setPosition(player.getPosition() - cameraPosition)
+        self.__window.getScreen().blit(playerSprite.get(), playerSprite.getRect())        

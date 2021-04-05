@@ -47,4 +47,4 @@ Problemes d'optimisation
 1. Realiser un circularGradient entre les bornes min,max de notre matrice de perlin
 2. Ne pas realiser de bijection et s'adapter au valeur min, max pour le passage à la map 2D
 3. Reduire la sommation de bruit dans la fonction perlin si necessaire
-4. TOFIX le joueur est plus rapide en diagonale car (triangle rectangle l'hypotenuse est plus grande que les cotes)
+4. Ne pas update toute la window mais seulement ce qui change à l'intérieur lorsque la camera est immobile

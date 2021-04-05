@@ -1,40 +1,41 @@
 from numpy import sqrt
+
 from game.src.core.Direction import Direction
+from game.src.core.pair.Coordinates import Coordinates
 
 """ 
 The position of the player is represented by the top left corner position of his sprite 
 """
 class Player:
-    def __init__(self, sprite, initialPositionPlayer):
-        self.__SPEED = 4
+    def __init__(self, sprite, initialPosition):
+        self.__SPEED = 2
 
         self.__sprite = sprite
-        self.__X  = initialPositionPlayer[0]
-        self.__Y = initialPositionPlayer[1]
+        self.__position = initialPosition
         self.__VelocityX = 0
         self.__VelocityY = 0
     
     """ Returns player position in pixel """
     def getPosition(self):
-        return (int(self.__X), int(self.__Y))
+        return self.__position
 
     def getNextPosition(self, direction):
         if (direction == Direction.LEFT):
-            return (int(self.__X - self.__SPEED), int(self.__Y))
+            return Coordinates(self.__position.x - self.__SPEED, self.__position.y)
         elif (direction == Direction.RIGHT):
-            return (int(self.__X + self.__SPEED), int(self.__Y))
+            return Coordinates(self.__position.x + self.__SPEED, self.__position.y)
         elif (direction == Direction.UP):
-            return (int(self.__X), int(self.__Y - self.__SPEED))
+            return Coordinates(self.__position.x, self.__position.y - self.__SPEED)
         elif (direction == Direction.DOWN):
-            return (int(self.__X), int(self.__Y + self.__SPEED))
+            return Coordinates(self.__position.x, self.__position.y + self.__SPEED)
 
     def adjustPosition(self):
         lenght = sqrt(self.__VelocityX ** 2 + self.__VelocityY ** 2)
         if (self.__VelocityX != 0 and self.__VelocityY != 0):
             tweakX = self.__VelocityX * self.__SPEED/lenght
             tweakY = self.__VelocityY * self.__SPEED/lenght
-            self.__X = self.__X - self.__VelocityX * self.__SPEED + tweakX
-            self.__Y = self.__Y - self.__VelocityY * self.__SPEED + tweakY
+            self.__position.x += - self.__VelocityX * self.__SPEED + tweakX
+            self.__position.x += - self.__VelocityY * self.__SPEED + tweakY
 
         self.__VelocityX = 0
         self.__VelocityY = 0
@@ -44,25 +45,28 @@ class Player:
 
     def getNextCorners(self, direction):
         pos = self.getNextPosition(direction)
-        topLeft = (pos[0], pos[1])
-        topRight = (pos[0] + self.__sprite.getWidth(), pos[1])
-        bottomLeft = (pos[0], pos[1] + self.__sprite.getHeight())
-        bottomRight = (pos[0] + self.__sprite.getWidth(), pos[1] + self.__sprite.getHeight())
-        return [topLeft, bottomLeft, bottomRight, topRight]
+        topLeft = Coordinates(pos.x, pos.y)
+        topRight = Coordinates(pos.x + self.__sprite.getSize().width, pos.y)
+        bottomLeft = Coordinates(pos.x, pos.y + self.__sprite.getSize().height)
+        bottomRight = Coordinates(pos.x + self.__sprite.getSize().width, pos.y + self.__sprite.getSize().height)
+        return [topLeft, bottomLeft, bottomRight, topRight] 
+
+    def getSprite(self):
+        return self.__sprite
 
     def moveLeft(self):
-        self.__X -= self.__SPEED
+        self.__position.x -= self.__SPEED
         self.__VelocityX -= 1
     
     def moveRight(self):
-        self.__X += self.__SPEED
+        self.__position.x += self.__SPEED
         self.__VelocityX += 1
 
     def moveUp(self):
-        self.__Y -= self.__SPEED
+        self.__position.y -= self.__SPEED
         self.__VelocityY -= 1
 
     def moveDown(self):
-        self.__Y += self.__SPEED
+        self.__position.y += self.__SPEED
         self.__VelocityY += 1
     

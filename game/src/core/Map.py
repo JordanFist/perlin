@@ -1,27 +1,36 @@
 from numpy import linspace, sqrt, inf, zeros, array
 from perlin_noise import PerlinNoise
-from game.src.ui.Sprite import Sprite
+from numpy import array
+
+from game.src.core.pair.Dimensions import Dimensions
+from game.src.core.TilesEnum import TilesEnum
+from game.src.core.Converter import Converter
 
 class Map:
     def __init__(self, seed=None):
-        self.__MAP_SIZE = (100, 120) #row, col
+        self.__MAP_SIZE = Dimensions(100, 100)
         self.__GRADIENT_FACTOR = 2
 
         self.__seed = seed
-        self.__map = zeros((self.__MAP_SIZE[0], self.__MAP_SIZE[1]))
+        self.__map = zeros(( self.__MAP_SIZE.height, self.__MAP_SIZE.width ))
 
         self.__generatePerlinMap()
     
     def get(self):
         return self.__map
 
-    """ Returns the index of the position in the map (row, col) """
-    def getIndex(self, position):
-        return (position[1] // Sprite.GROUND_TILE_SIZE, position[0] // Sprite.GROUND_TILE_SIZE)
+    def getType(self, position):
+        row, col = (int(Converter.pixelToIndex(position.y)), int(Converter.pixelToIndex(position.x)))
+        return TilesEnum.getID(self.__map[row][col])
 
-    """ Returns the size of the map in pixel (row, col) """
+    """ Returns the size of the map in pixel """
     def getSize(self):
-        return array([self.__MAP_SIZE[0] * Sprite.GROUND_TILE_SIZE, self.__MAP_SIZE[1] * Sprite.GROUND_TILE_SIZE])
+        return Converter.indexToPixel(self.__MAP_SIZE)
+
+    def isInMap(self, position):
+        if (position.x > 0 and position.x < self.getSize().width and position.y > 0 and position.y < self.getSize().height):
+            return True
+        return False
 
     def __generatePerlinMap(self):
         self.__perlinMap()
@@ -31,8 +40,8 @@ class Map:
     
     """ Returns a circular gradient between 0 and 1 """
     def __circularGradient(self):
-        x = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[0])[:, None]
-        y = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE[1])[None, :]
+        x = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE.width)[None, :]
+        y = linspace(-1/sqrt(2), 1/sqrt(2), self.__MAP_SIZE.height)[:, None]
         return sqrt(x ** 2 + y ** 2) 
 
     def __minMax(self):
@@ -45,11 +54,7 @@ class Map:
 
     def __bijection(self, mini, maxi):
         if (mini == maxi):
-            print(  "Error: mini can't be equal to maxi",
-                    "\nFile: " + __file__,
-                    "\nFunction: bijection")            
-            return None
-            
+            raise Exception("mini can't be equal to maxi")
         return (self.__map - mini) / (maxi - mini)
 
     def __perlinMap(self):
@@ -58,10 +63,10 @@ class Map:
         noise3 = PerlinNoise(octaves = 12, seed = self.__seed)
         noise4 = PerlinNoise(octaves = 24, seed = self.__seed)
 
-        for i in range(self.__MAP_SIZE[0]):
-            for j in range(self.__MAP_SIZE[1]):
-                noise_val =  1   *   noise1([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
-                noise_val += 1/2 *   noise2([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
-                noise_val += 1/4 *   noise3([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
-                noise_val += 1/8 *   noise4([i/self.__MAP_SIZE[0], j/self.__MAP_SIZE[1]])
+        for i in range(self.__MAP_SIZE.height):
+            for j in range(self.__MAP_SIZE.width):
+                noise_val =  1   *   noise1([i/self.__MAP_SIZE.height, j/self.__MAP_SIZE.width])
+                noise_val += 1/2 *   noise2([i/self.__MAP_SIZE.height, j/self.__MAP_SIZE.width])
+                noise_val += 1/4 *   noise3([i/self.__MAP_SIZE.height, j/self.__MAP_SIZE.width])
+                noise_val += 1/8 *   noise4([i/self.__MAP_SIZE.height, j/self.__MAP_SIZE.width])
                 self.__map[i][j] = noise_val

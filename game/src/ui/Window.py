@@ -1,9 +1,13 @@
 import pygame
 
+from game.src.core.pair.Dimensions import Dimensions
+
 class Window:
     def __init__(self):
         self.__INITIAL_WIDTH = 1080
         self.__INITIAL_HEIGHT = 720
+        self.__MINIMUM_WIDTH = 600
+        self.__MINIMUM_HEIGHT = 400
         self.__FPS = 244
         
         pygame.init()
@@ -13,20 +17,12 @@ class Window:
         self.__screen = pygame.display.set_mode((self.__INITIAL_WIDTH, self.__INITIAL_HEIGHT), pygame.RESIZABLE)
         self.__clock = pygame.time.Clock()
 
-    """ Returns window size in pixel """
+    """ Returns window size """
     @staticmethod
     def getSize():
-        return pygame.display.get_surface().get_size()
+        return Dimensions(*pygame.display.get_surface().get_size())
 
-    @staticmethod
-    def getWidth():
-        return pygame.display.get_surface().get_width()
-
-    @staticmethod
-    def getHeight():
-        return pygame.display.get_surface().get_height()
-
-    """ This clock ensures to have __FPS Frame Per Second """
+    """ This clock ensures to have __FPS Frames Per Second """
     def clock(self):
         self.__clock.tick(self.__FPS)
 
@@ -34,6 +30,10 @@ class Window:
         return self.__screen
 
     def resizeScreen(self, width, height):
+        if (width < self.__MINIMUM_WIDTH):
+            width = self.__MINIMUM_WIDTH
+        if (height < self.__MINIMUM_HEIGHT):
+            height = self.__MINIMUM_HEIGHT
         self.__screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 
     
