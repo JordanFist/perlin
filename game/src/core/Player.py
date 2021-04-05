@@ -8,7 +8,7 @@ The position of the player is represented by the top left corner position of his
 """
 class Player:
     def __init__(self, sprite, initialPosition):
-        self.__SPEED = 2
+        self.__SPEED = 1
 
         self.__sprite = sprite
         self.__position = initialPosition
@@ -35,7 +35,7 @@ class Player:
             tweakX = self.__VelocityX * self.__SPEED/lenght
             tweakY = self.__VelocityY * self.__SPEED/lenght
             self.__position.x += - self.__VelocityX * self.__SPEED + tweakX
-            self.__position.x += - self.__VelocityY * self.__SPEED + tweakY
+            self.__position.y += - self.__VelocityY * self.__SPEED + tweakY
 
         self.__VelocityX = 0
         self.__VelocityY = 0

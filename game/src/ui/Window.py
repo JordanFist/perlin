@@ -11,6 +11,7 @@ class Window:
         self.__FPS = 244
         
         pygame.init()
+        pygame.font.init()
         pygame.display.set_caption("Perlin")
         #pygame.mouse.set_visible(False)
 

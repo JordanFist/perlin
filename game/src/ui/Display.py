@@ -12,4 +12,4 @@ class Display:
 
         playerSprite = self.__spriteStore.getPlayer()
         playerSprite.setPosition(player.getPosition() - cameraPosition)
-        self.__window.getScreen().blit(playerSprite.get(), playerSprite.getRect())        
+        self.__window.getScreen().blit(playerSprite.get(), playerSprite.getRect())

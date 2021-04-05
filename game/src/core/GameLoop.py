@@ -15,8 +15,8 @@ from game.src.ui.Sprite import Sprite
 from game.src.ui.SpriteStore import SpriteStore
 
 class GameLoop:
-    def __init__(self, seed=None):
-        self.__window = Window()
+    def __init__(self, window, seed=None):
+        self.__window = window
 
         self.__map = Map(seed) 
         self.__spriteStore = SpriteStore()

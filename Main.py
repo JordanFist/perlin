@@ -1,9 +1,15 @@
-from game.src.core.GameLoop import GameLoop
+from game.src.ui.Window import Window
+
+from game.src.ui.Menu import Menu
 
 class Main:
     def __init__(self):
         self.SEED = 1
-        gameLoop = GameLoop(self.SEED)
+
+        self.__window = Window()
+
+        Menu(self.__window)
+
 
 
 if (__name__ == "__main__"):
