@@ -37,7 +37,7 @@ class GameLoop:
     def __windowResized(self, event):
         if event.type == pygame.VIDEORESIZE:
             self.__window.resizeScreen(event.w, event.h)
-            self.__camera.__init__(self.__player, self.__map.getSize())
+            self.__camera.resetCamera()
             return True
         return False
 

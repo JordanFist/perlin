@@ -5,12 +5,7 @@ Objectifs pour une V0
 V1 idées
 =========
 1. Animer le sprite player (Hora)
-2. Creer une vraie camera (https://www.youtube.com/watch?v=GTxiCzvYNOc) (Jo')
-3. Revoir l'ecran resizable avec la bonne caméra
-    - le joueur va plus vite avec une plus petite window
-    - lorsque la window est plus petite le joueur peut aller plus loin sur les bords et si on resize plus grand alors la view sort de la window et ca crash
-    - Rajouter un GUI scale qui zoom la view si la window est trop grande utilisant des breakpoints pour savoir quand zoomer et dezoomer
-4. faire un title screen avec temps de chargement (Hora) : 
+2. faire un title screen avec temps de chargement (Hora) : 
     - Bouton start
     - Loading bar
 
@@ -23,7 +18,7 @@ V2 idées
 2. Villages, routes (Hora & Jo')
 3. Settings pour title screen : (Hora)
     - SEED
-    - GUI SCALE
+    - MAP SCALE (comment faire ?) (comment redimmensionner la map pour pas que ca ne paraisse trop loin)
 
 V3 idées
 ==========
@@ -35,7 +30,9 @@ V3 idées
 3. Ajouter de la musique et des sons
 
 
-
+A Modifier
+===========
+1. Changer la manière dont on update les sprites utiliser la fonction update codée dans sprite.Sprite (https://www.youtube.com/watch?v=hDu8mcAlY4E&t=563s)
 
 Aller plus loin
 ===============

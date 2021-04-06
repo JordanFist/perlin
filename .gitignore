@@ -1,12 +1,13 @@
 .vscode/*
 
-/__pycache__/*
-game/__pycache__/*
-game/test/__pycache__/*
-game/src/__pycache__/*
-game/src/core/__pycache__/*
-game/src/core/pair/__pycache__/*
-game/src/ui/__pycache__/*
-game/src/ui/gui/__pycache__/*
+/__pycache__/
+game/__pycache__/
+game/test/__pycache__/
+game/src/__pycache__/
+game/src/core/__pycache__/
+game/src/core/pair/__pycache__/
+game/src/ui/__pycache__/
+game/src/ui/gui/__pycache__/
+.DS_Store
 
 Menu.drawio

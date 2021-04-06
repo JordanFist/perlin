@@ -4,7 +4,8 @@ class Camera:
     def __init__(self, player, mapSize):
         self.__player = player
         self.__mapSize = mapSize
-        self.__camera = self.__player.getPosition() + self.__player.getSprite().getSize() // 2 - Window.getSize() // 2
+        self.__camera = None
+        self.resetCamera()
     
     """ Returns the camera top left coordinates """
     def get(self):
@@ -23,6 +24,11 @@ class Camera:
             self.__camera.y = min(self.__mapSize.height - Window.getSize().height, playerBarycenter.y - (Window.getSize().height - Window.getSize().height // 4))
 
         return self.__camera
+
+    def resetCamera(self):
+        self.__camera = self.__player.getPosition() + self.__player.getSprite().getSize() // 2 - Window.getSize() // 2
+        self.__camera.x = min(self.__mapSize.width - Window.getSize().width, max(0, self.__camera.x))
+        self.__camera.y = min(self.__mapSize.height - Window.getSize().height, max(0, self.__camera.y))
 
     """
     def get(self): 
