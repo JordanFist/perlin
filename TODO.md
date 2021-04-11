@@ -4,21 +4,35 @@ Objectifs pour une V0
 
 V1 idées
 =========
-1. Animer le sprite player (Hora)
-2. faire un title screen avec temps de chargement (Hora) : 
-    - Bouton start
-    - Loading bar
+1. Loading message -> Revoir la class Text
+2. Vérifier collision quand on release le bouton
+3. BouTons se replacent bien après le Re-Size
+
+
+TOFIX : 
+    Sur mac : 
+        Sprite png noir (convert_alpha bordel)
+    Sur windows : 
+        Ne repaint pas au lancement du jeu
+
 
 
 
 
 V2 idées
 ========
-1. Pouvoir aller sur l'eau (Jo')
-2. Villages, routes (Hora & Jo')
-3. Settings pour title screen : (Hora)
-    - SEED
-    - MAP SCALE (comment faire ?) (comment redimmensionner la map pour pas que ca ne paraisse trop loin)
+0. TROUVER CES PUTAINS DE SPRITES ! FAUT QU'ON ARRETE LES CONNERIES ! 
+1. Villages, routes (Hora & Jo') :
+    Villages : 
+        Placer les villages : 
+            - Améliorer l'algorithme pour placer les villages
+            - Comment les placer sans les coller
+    Chemins:
+        Placer les chemins:
+            - Algorithme A*
+            - Algorithme Djikstra 
+    
+(2. Animation Personnage) ?
 
 V3 idées
 ==========

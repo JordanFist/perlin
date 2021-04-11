@@ -43,7 +43,7 @@ class Menu:
         self.__running = gameLoop.run()
 
     def __settings(self):
-        print(settings)
+        print("settings")
 
     def __closeWindow(self):
         self.__running = False
@@ -66,6 +66,7 @@ class Menu:
                     self.__repaint()
 
                 self.__startButton.checkEvent(event)
+                self.__settingsButton.checkEvent(event)
                 self.__quitButton.checkEvent(event)
 
             if(self.__startButton.checkHover() or self.__settingsButton.checkHover() or self.__quitButton.checkHover()):
