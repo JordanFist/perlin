@@ -70,7 +70,7 @@ class Button():
             self.setPosition()
         textPosition = self.getPosition() + self.getSize() // 2 -  self.__text.getSize() // 2
         self.__text.update(window, textPosition)
-        pygame.draw.rect(window.getScreen(), "red", self.__rect, 1) 
+        #pygame.draw.rect(window.getScreen(), "red", self.__rect, 1) 
 
     def setPosition(self):
         if not self.__margin:

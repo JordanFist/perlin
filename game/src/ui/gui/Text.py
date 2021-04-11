@@ -7,6 +7,7 @@ class Text:
     DEFAULT_FONT_SIZE = 30
     HIGHLIGHTED_FONT_SIZE = DEFAULT_FONT_SIZE * ZOOM
     FONT = "georgia"
+    DEFAULT_COLOR = "gold"
 
     def __init__(self, message):
         self.__message = message
@@ -34,7 +35,7 @@ class Text:
 
     def __createSurface(self, size): 
         font = pygame.freetype.SysFont(self.FONT, size, bold=True)
-        surface, _ = font.render(self.__message, fgcolor=(225,225,20))
+        surface, _ = font.render(self.__message, fgcolor=self.DEFAULT_COLOR)
         self.__text = surface.convert_alpha()
         self.__rect = self.__text.get_rect()
 

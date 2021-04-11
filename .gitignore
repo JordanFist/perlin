@@ -8,6 +8,7 @@ game/src/core/__pycache__/
 game/src/core/pair/__pycache__/
 game/src/ui/__pycache__/
 game/src/ui/gui/__pycache__/
+game/src/media/music/__pycache__/
 .DS_Store
 
 Menu.drawio

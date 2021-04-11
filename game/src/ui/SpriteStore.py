@@ -5,7 +5,7 @@ class SpriteStore:
     MAIN_CHARACTER = 0
 
     def __init__(self):
-        self.__PATH = "game/resources/"
+        self.__PATH = "game/resources/sprites/"
         self.__store = {}
 
         self.load()

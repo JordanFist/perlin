@@ -6,7 +6,7 @@ from game.src.core.pair.Coordinates import Coordinates
 from game.src.core.pair.Dimensions import Dimensions
 from game.src.ui.gui.Position import Position
 from game.src.ui.gui.Margin import Margin
-
+from game.src.media.music.Music import Music
 class Menu:
     def __init__(self, window, seed=None):
         self.__seed = seed
@@ -16,6 +16,11 @@ class Menu:
         self.__startButton = Button("New Game", self.__newGame, Position.CENTER, None, Margin(50, 0, 0, 0))
         self.__settingsButton = Button("Settings", self.__settings, Position.BOTTOM, self.__startButton, Margin(50, 0, 0, 0))
         self.__quitButton = Button("Quit", self.__closeWindow, Position.BOTTOM, self.__settingsButton, Margin(50, 0, 0, 0))
+
+        self.__background = pygame.image.load("game/resources/backgrounds/menuBackground.png").convert_alpha()
+        self.__background = pygame.transform.scale(self.__background, self.__window.getSize().toTuple())  
+
+        Music.play("Celestial", -1)
 
         self.run()
 
@@ -27,11 +32,13 @@ class Menu:
     def __windowResized(self, event):
         if event.type == pygame.VIDEORESIZE:
             self.__window.resizeScreen(event.w, event.h)
+            self.__background = pygame.transform.scale(self.__background, self.__window.getSize().toTuple())
             #//FIXME demander de replacer les buttons apres le resize
             return True
         return False
 
     def __newGame(self):
+        Music.stop(fadeOut=True)
         gameLoop = GameLoop(self.__window, self.__seed)
         self.__running = gameLoop.run()
 
@@ -42,10 +49,11 @@ class Menu:
         self.__running = False
 
     def __repaint(self):
-        self.__window.getScreen().fill("black")
+        self.__window.getScreen().blit(self.__background, (0,0))
         self.__startButton.update(self.__window)
         self.__settingsButton.update(self.__window)
         self.__quitButton.update(self.__window)
+
         pygame.display.update()
 
     def run(self):
