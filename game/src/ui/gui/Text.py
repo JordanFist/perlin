@@ -1,46 +1,43 @@
 import pygame
 import pygame.freetype
 from game.src.core.pair.Dimensions import Dimensions
+
 class Text:
-    def __init__(self, text, buttonPosition, buttonSize):
-        self.__ZOOM = 1.2
-        self.__DEFAULT_FONT_SIZE = 30
-        self.__HIGHLIGHTED_FONT_SIZE = self.__DEFAULT_FONT_SIZE * self.__ZOOM
+    ZOOM = 1.2
+    DEFAULT_FONT_SIZE = 30
+    HIGHLIGHTED_FONT_SIZE = DEFAULT_FONT_SIZE * ZOOM
+    FONT = "georgia"
 
-        self.__text = text
-
-        self.__buttonPosition = buttonPosition
-        self.__buttonSize = buttonSize
-
-        self.__surface = self.createSurface(self.__DEFAULT_FONT_SIZE)
-
-        self.__rect = self.__surface.get_rect()
-        self.__position = (buttonPosition + buttonSize // 2) - self.getSize() // 2
+    def __init__(self, message):
+        self.__message = message
+        self.__rect = None
+        self.__text = None
+        self.__createSurface(self.DEFAULT_FONT_SIZE)
 
     def get(self):
-        return self.__surface
+        return self.__text
     
+    def getRect(self):
+        return self.__rect
+
     def getSize(self):
-        return Dimensions(self.__rect.width , self.__rect.height)
+        return Dimensions(*self.__rect.size)
 
-    def getPosition(self):
-        return self.__position
-    
-    def createSurface(self, size):
-        font = pygame.freetype.SysFont("Consolas", size, bold=True)
-        surface, _ = font.render(self.__text, fgcolor=(225,225,20))
-        return surface.convert_alpha()
-
-    def setPosition(self):
-        self.__rect = self.__surface.get_rect()
-        self.__position = (self.__buttonPosition + self.__buttonSize // 2) - self.getSize() // 2
+    def setPosition(self, position):
+        self.__rect.topleft = position.toTuple()
 
     def highlight(self):
-        self.__surface = self.createSurface(self.__HIGHLIGHTED_FONT_SIZE)
-        self.setPosition()
-              
+        self.__createSurface(self.HIGHLIGHTED_FONT_SIZE)
 
     def default(self):
-        self.__surface = self.createSurface(self.__DEFAULT_FONT_SIZE)
-        self.setPosition()
-    
+        self.__createSurface(self.DEFAULT_FONT_SIZE)
+
+    def __createSurface(self, size): 
+        font = pygame.freetype.SysFont(self.FONT, size, bold=True)
+        surface, _ = font.render(self.__message, fgcolor=(225,225,20))
+        self.__text = surface.convert_alpha()
+        self.__rect = self.__text.get_rect()
+
+    def update(self, window, position):
+        self.setPosition(position)
+        window.getScreen().blit(self.__text, self.getRect())

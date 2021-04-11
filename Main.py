@@ -1,16 +1,12 @@
 from game.src.ui.Window import Window
-
-from game.src.ui.Menu import Menu
+from game.src.ui.gui.Menu import Menu
 
 class Main:
     def __init__(self):
-        self.SEED = 1
+        self.__SEED = 1
 
         self.__window = Window()
-
-        Menu(self.__window)
-
-
+        Menu(self.__window, self.__SEED)
 
 if (__name__ == "__main__"):
     Main()

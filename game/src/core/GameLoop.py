@@ -6,6 +6,7 @@ from game.src.core.Camera import Camera
 from game.src.core.TilesEnum import TilesEnum
 from game.src.core.Direction import Direction
 from game.src.core.pair.Coordinates import Coordinates
+from game.src.core.States import States
 
 
 from game.src.ui.Window import Window
@@ -27,8 +28,6 @@ class GameLoop:
         self.__camera = Camera(self.__player, self.__map.getSize())
         self.__display = Display(self.__window, self.__camera, self.__background, self.__spriteStore)
 
-        self.run()
-
     def __isWindowClosed(self, event):
         if event.type == pygame.QUIT:
             return False
@@ -43,9 +42,9 @@ class GameLoop:
 
     def __canWalk(self, direction):
         playerCorners = self.__player.getNextCorners(direction)
-        return  self.__map.isInMap(playerCorners[1]) and self.__map.isInMap(playerCorners[2]) and \
-                self.__map.getType(playerCorners[1]) > TilesEnum.SHALLOW_WATER and \
-                self.__map.getType(playerCorners[2]) > TilesEnum.SHALLOW_WATER
+        return  self.__map.isInMap(playerCorners[2]) and self.__map.isInMap(playerCorners[3]) and \
+                self.__map.getType(playerCorners[2]) > TilesEnum.SHALLOW_WATER and \
+                self.__map.getType(playerCorners[3]) > TilesEnum.SHALLOW_WATER
 
     def __playerMoved(self, keysPressed):
         hasMoved = False
@@ -81,5 +80,6 @@ class GameLoop:
             if self.__playerMoved(pygame.key.get_pressed()):
                 self.__repaint()
 
-            self.__window.clock()
-        
+            self.__window.clock()      
+            
+        return False  

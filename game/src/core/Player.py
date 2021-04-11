@@ -8,7 +8,7 @@ The position of the player is represented by the top left corner position of his
 """
 class Player:
     def __init__(self, sprite, initialPosition):
-        self.__SPEED = 1
+        self.__SPEED = 2
 
         self.__sprite = sprite
         self.__position = initialPosition
@@ -49,7 +49,7 @@ class Player:
         topRight = Coordinates(pos.x + self.__sprite.getSize().width, pos.y)
         bottomLeft = Coordinates(pos.x, pos.y + self.__sprite.getSize().height)
         bottomRight = Coordinates(pos.x + self.__sprite.getSize().width, pos.y + self.__sprite.getSize().height)
-        return [topLeft, bottomLeft, bottomRight, topRight] 
+        return [topLeft, topRight, bottomRight, bottomLeft] 
 
     def getSprite(self):
         return self.__sprite

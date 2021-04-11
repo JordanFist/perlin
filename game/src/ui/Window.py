@@ -13,7 +13,6 @@ class Window:
         pygame.init()
         pygame.font.init()
         pygame.display.set_caption("Perlin")
-        #pygame.mouse.set_visible(False)
 
         self.__screen = pygame.display.set_mode((self.__INITIAL_WIDTH, self.__INITIAL_HEIGHT), pygame.RESIZABLE)
         self.__clock = pygame.time.Clock()
