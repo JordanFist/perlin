@@ -1,6 +1,7 @@
 import pygame
 
-from game.src.core.pair.Dimensions import Dimensions
+from game.src.core.utils.Dimensions import Dimensions
+from game.src.core.enums.States import States
 
 class Window:
     def __init__(self):
@@ -11,7 +12,6 @@ class Window:
         self.__FPS = 244
         
         pygame.init()
-        pygame.font.init()
         pygame.display.set_caption("Perlin")
 
         self.__screen = pygame.display.set_mode((self.__INITIAL_WIDTH, self.__INITIAL_HEIGHT), pygame.RESIZABLE)
@@ -22,14 +22,28 @@ class Window:
     def getSize():
         return Dimensions(*pygame.display.get_surface().get_size())
 
+    def getScreen(self):
+        return self.__screen
+
     """ This clock ensures to have __FPS Frames Per Second """
     def clock(self):
         self.__clock.tick(self.__FPS)
 
-    def getScreen(self):
-        return self.__screen
+    def isClosed(self, event):
+        if event.type == pygame.QUIT:
+            return States.QUIT
+        return States.CONTINUE
 
-    def resizeScreen(self, width, height):
+    def close(self):
+        pygame.quit()
+        quit()
+
+    def isResized(self, event):
+        if event.type == pygame.VIDEORESIZE:
+            return True
+        return False
+
+    def resize(self, width, height):
         if (width < self.__MINIMUM_WIDTH):
             width = self.__MINIMUM_WIDTH
         if (height < self.__MINIMUM_HEIGHT):

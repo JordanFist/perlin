@@ -1,3 +1,4 @@
 class States:
-    QUIT = False
-    CONTINUE = True
+    QUIT = 0
+    CONTINUE = 1
+    BACK = 2

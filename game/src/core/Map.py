@@ -2,9 +2,9 @@ from numpy import linspace, sqrt, inf, zeros, array
 from perlin_noise import PerlinNoise
 from numpy import array
 
-from game.src.core.pair.Dimensions import Dimensions
-from game.src.core.TilesEnum import TilesEnum
-from game.src.core.Converter import Converter
+from game.src.core.utils.Dimensions import Dimensions
+from game.src.core.enums.Tiles import Tiles
+from game.src.core.utils.Converter import Converter
 
 class Map:
     def __init__(self, seed=None):
@@ -21,7 +21,7 @@ class Map:
 
     def getType(self, position):
         row, col = (int(Converter.pixelToIndex(position.y)), int(Converter.pixelToIndex(position.x)))
-        return TilesEnum.getID(self.__map[row][col])
+        return Tiles.getID(self.__map[row][col])
 
     """ Returns the size of the map in pixel """
     def getSize(self):

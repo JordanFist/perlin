@@ -1,7 +1,7 @@
 from numpy import sqrt
 
-from game.src.core.Direction import Direction
-from game.src.core.pair.Coordinates import Coordinates
+from game.src.core.enums.Direction import Direction
+from game.src.core.utils.Coordinates import Coordinates
 
 """ 
 The position of the player is represented by the top left corner position of his sprite 
@@ -53,6 +53,9 @@ class Player:
 
     def getSprite(self):
         return self.__sprite
+
+    def update(self, position):
+        self.__sprite.setPosition(position)
 
     def moveLeft(self):
         self.__position.x -= self.__SPEED

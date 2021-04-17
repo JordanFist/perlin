@@ -1,4 +1,4 @@
-class TilesEnum:
+class Tiles:
     # Threshold values
     DEEP_WATER_THRESHOLD = 0
     SHALLOW_WATER_THRESHOLD = 0.37

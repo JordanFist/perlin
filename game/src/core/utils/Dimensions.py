@@ -1,4 +1,4 @@
-from game.src.core.pair import Pair 
+from game.src.core.utils import Pair 
 
 class Dimensions(Pair.Pair):
     def __init__(self, width, height):

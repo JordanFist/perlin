@@ -1,22 +1,13 @@
-Objectifs pour une V0
-======================
-1. Trouver un nouveau ressource pack
-
 V1 idées
 =========
-1. Loading message -> Revoir la class Text
-2. Vérifier collision quand on release le bouton
-3. BouTons se replacent bien après le Re-Size
-
+1. Loading message -> Revoir la class Text (DONE)
+2. trouver une formule pour setPosition pour eviter le if relative (DONE)
+5. Revoir la structure de Display et background (DONE)
+6. Tester les bugs d'affichage, resize, etc
 
 TOFIX : 
-    Sur mac : 
-        Sprite png noir (convert_alpha bordel)
     Sur windows : 
         Ne repaint pas au lancement du jeu
-
-
-
 
 
 V2 idées
@@ -44,9 +35,12 @@ V3 idées
 3. Ajouter de la musique et des sons
 
 
-A Modifier
-===========
-1. Changer la manière dont on update les sprites utiliser la fonction update codée dans sprite.Sprite (https://www.youtube.com/watch?v=hDu8mcAlY4E&t=563s)
+Petites améliorations
+=====================
+- Ajouter un gui scale avec 1 ou 2 breakpoint en fonction de la taille de la fenetre et qui gere la taille de la police des mots (peut gerer les margins en pourcentage plutot qu'en pixel)
+- Ajouter des bordures de transition pour les tiles de sol
+- Commenter toutes nos fonctions
+
 
 Aller plus loin
 ===============

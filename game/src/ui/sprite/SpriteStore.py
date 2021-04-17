@@ -23,7 +23,7 @@ class SpriteStore:
         return self.__store[spriteType][spriteNumber]
 
     def getPlayer(self):
-        return self.__store["players"][self.MAIN_CHARACTER]
+        return self.__store["sprites"][self.MAIN_CHARACTER]
 
             
                     

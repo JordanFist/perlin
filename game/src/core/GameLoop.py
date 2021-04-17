@@ -2,18 +2,17 @@ import pygame
 
 from game.src.core.Map import Map
 from game.src.core.Player import Player
-from game.src.core.Camera import Camera
-from game.src.core.TilesEnum import TilesEnum
-from game.src.core.Direction import Direction
-from game.src.core.pair.Coordinates import Coordinates
-from game.src.core.States import States
-
+from game.src.core.enums.Tiles import Tiles
+from game.src.core.enums.Direction import Direction
+from game.src.core.utils.Coordinates import Coordinates
+from game.src.core.enums.States import States
 
 from game.src.ui.Window import Window
-from game.src.ui.Display import Display
-from game.src.ui.Background import Background
-from game.src.ui.Sprite import Sprite
-from game.src.ui.SpriteStore import SpriteStore
+from game.src.ui.display.DisplayGame import DisplayGame
+from game.src.ui.Camera import Camera
+from game.src.ui.background.BackgroundGame import BackgroundGame
+from game.src.ui.sprite.Sprite import Sprite
+from game.src.ui.sprite.SpriteStore import SpriteStore
 
 class GameLoop:
     def __init__(self, window, seed=None):
@@ -21,30 +20,24 @@ class GameLoop:
 
         self.__map = Map(seed) 
         self.__spriteStore = SpriteStore()
-        self.__background = Background(self.__map, self.__spriteStore)
+        self.__background = BackgroundGame(self.__map, self.__spriteStore)
 
         initialPlayerPosition = Coordinates(self.__map.getSize().width // 2, self.__map.getSize().height // 2)
         self.__player = Player(self.__spriteStore.getPlayer(), initialPlayerPosition)
         self.__camera = Camera(self.__player, self.__map.getSize())
-        self.__display = Display(self.__window, self.__camera, self.__background, self.__spriteStore)
+        self.__display = DisplayGame(self.__window, self.__background, self.__camera)
+        self.__display.add(self.__player)
 
-    def __isWindowClosed(self, event):
-        if event.type == pygame.QUIT:
-            return False
-        return True
-
-    def __windowResized(self, event):
-        if event.type == pygame.VIDEORESIZE:
-            self.__window.resizeScreen(event.w, event.h)
-            self.__camera.resetCamera()
-            return True
-        return False
+    def __resize(self, event):
+        self.__window.resize(event.w, event.h)
+        self.__camera.resetCamera()
+        self.__display.flip()
 
     def __canWalk(self, direction):
         playerCorners = self.__player.getNextCorners(direction)
         return  self.__map.isInMap(playerCorners[2]) and self.__map.isInMap(playerCorners[3]) and \
-                self.__map.getType(playerCorners[2]) > TilesEnum.SHALLOW_WATER and \
-                self.__map.getType(playerCorners[3]) > TilesEnum.SHALLOW_WATER
+                self.__map.getType(playerCorners[2]) > Tiles.SHALLOW_WATER and \
+                self.__map.getType(playerCorners[3]) > Tiles.SHALLOW_WATER
 
     def __playerMoved(self, keysPressed):
         hasMoved = False
@@ -63,23 +56,26 @@ class GameLoop:
         self.__player.adjustPosition()
         return hasMoved
 
-    def __repaint(self):
-        self.__display.update(self.__player)
-        pygame.display.update()
-
     def run(self):
-        running = True
-        self.__repaint()
+        running = States.CONTINUE
+        self.__display.flip()
 
-        while running:   
+        while running == States.CONTINUE:   
+            updated = False
             for event in pygame.event.get():
-                running = self.__isWindowClosed(event)
-                if self.__windowResized(event):
-                    self.__repaint()
+                running = self.__window.isClosed(event)
+
+                if self.__window.isResized(event):
+                    self.__resize(event)
 
             if self.__playerMoved(pygame.key.get_pressed()):
-                self.__repaint()
+                self.__display.toUpdate(self.__player)
+                updated = True
 
-            self.__window.clock()      
-            
-        return False  
+            if updated:
+                self.__display.update()
+
+            self.__window.clock()    
+        
+        if (running == States.QUIT):
+            self.__window.close()

@@ -1,6 +1,6 @@
-import pygame
 import pygame.freetype
-from game.src.core.pair.Dimensions import Dimensions
+from game.src.core.utils.Dimensions import Dimensions
+from game.src.ui.utils.Position import Position
 
 class Text:
     ZOOM = 1.2
@@ -9,11 +9,15 @@ class Text:
     FONT = "georgia"
     DEFAULT_COLOR = "gold"
 
-    def __init__(self, message):
+    def __init__(self, message, position=None, margin=None):
         self.__message = message
+        self.__position = position
+        self.__margin = margin
         self.__rect = None
         self.__text = None
         self.__createSurface(self.DEFAULT_FONT_SIZE)
+        if position:
+            self.__rect = Position.getRect(position, self.getSize(), margin).topleft
 
     def get(self):
         return self.__text
@@ -39,6 +43,6 @@ class Text:
         self.__text = surface.convert_alpha()
         self.__rect = self.__text.get_rect()
 
-    def update(self, window, position):
-        self.setPosition(position)
-        window.getScreen().blit(self.__text, self.getRect())
+    def update(self, position=None):
+        if position:
+            self.setPosition(position)

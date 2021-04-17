@@ -1,4 +1,4 @@
-from game.src.ui.Sprite import Sprite
+from game.src.ui.sprite.Sprite import Sprite
 
 class Converter:
 
