@@ -4,12 +4,12 @@ from game.src.core.Map import Map
 from game.src.core.Player import Player
 from game.src.core.enums.Tiles import Tiles
 from game.src.core.enums.Direction import Direction
-from game.src.core.utils.Coordinates import Coordinates
 from game.src.core.enums.States import States
+from game.src.core.utils.Coordinates import Coordinates
 
 from game.src.ui.Window import Window
-from game.src.ui.display.DisplayGame import DisplayGame
 from game.src.ui.Camera import Camera
+from game.src.ui.display.DisplayGame import DisplayGame
 from game.src.ui.background.BackgroundGame import BackgroundGame
 from game.src.ui.sprite.Sprite import Sprite
 from game.src.ui.sprite.SpriteStore import SpriteStore
@@ -60,7 +60,13 @@ class GameLoop:
         running = States.CONTINUE
         self.__display.flip()
 
+        count = 0
+        from time import time
+        start = time()
+
         while running == States.CONTINUE:   
+            count += 1
+            
             updated = False
             for event in pygame.event.get():
                 running = self.__window.isClosed(event)
@@ -76,6 +82,8 @@ class GameLoop:
                 self.__display.update()
 
             self.__window.clock()    
+
+        print(count/(time()-start))
         
         if (running == States.QUIT):
             self.__window.close()

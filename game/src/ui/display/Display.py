@@ -1,5 +1,3 @@
-import pygame
-
 class Display:
     def __init__(self, window, background):
         self._window = window

@@ -1,5 +1,6 @@
-from game.src.ui.sprite.Sprite import Sprite
 import glob, os
+
+from game.src.ui.sprite.Sprite import Sprite
 
 class SpriteStore:
     MAIN_CHARACTER = 0

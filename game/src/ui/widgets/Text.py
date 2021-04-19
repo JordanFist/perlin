@@ -1,5 +1,7 @@
 import pygame.freetype
+
 from game.src.core.utils.Dimensions import Dimensions
+
 from game.src.ui.utils.Position import Position
 
 class Text:

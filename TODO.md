@@ -1,9 +1,7 @@
 V1 idées
 =========
-1. Loading message -> Revoir la class Text (DONE)
-2. trouver une formule pour setPosition pour eviter le if relative (DONE)
-5. Revoir la structure de Display et background (DONE)
-6. Tester les bugs d'affichage, resize, etc
+1. Gros ralentissement, pourquoi ?
+2. Tester les bugs d'affichage, resize, etc
 
 TOFIX : 
     Sur windows : 

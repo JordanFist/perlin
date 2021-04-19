@@ -21,7 +21,7 @@ class Menu:
         self.__running = States.CONTINUE
         self.__buttons = []
         self.__initWidget()
-        #Music.play("Celestial", -1)
+        Music.play("Celestial", -1)
 
         self.run()
 
