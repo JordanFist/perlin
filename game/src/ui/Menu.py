@@ -1,21 +1,21 @@
 import pygame
 
-from game.src.core.GameLoop import GameLoop
-from game.src.core.media.music.Music import Music
-from game.src.core.enums.States import States
+from src.core.GameLoop import GameLoop
+from src.core.media.music.Music import Music
+from src.core.enums.States import States
 
-from game.src.ui.background.BackgroundImage import BackgroundImage
-from game.src.ui.display.DisplayMenu import DisplayMenu
-from game.src.ui.widgets.Button import Button
-from game.src.ui.widgets.Text import Text
-from game.src.ui.utils.Position import Position
-from game.src.ui.utils.Margin import Margin
+from src.ui.background.BackgroundImage import BackgroundImage
+from src.ui.display.DisplayMenu import DisplayMenu
+from src.ui.widgets.Button import Button
+from src.ui.widgets.Text import Text
+from src.ui.utils.Position import Position
+from src.ui.utils.Margin import Margin
 
 class Menu:
     def __init__(self, window, seed=None):
         self.__seed = seed
         self.__window = window
-        self.__background = BackgroundImage("game/resources/backgrounds/menuBackground.png")
+        self.__background = BackgroundImage("resources/backgrounds/menuBackground.png")
         self.__display = DisplayMenu(self.__window, self.__background)
 
         self.__running = States.CONTINUE
@@ -28,7 +28,7 @@ class Menu:
     def __initWidget(self):
         startButton = Button("New Game", self.__newGame, Position.CENTER, Margin(50, 0, 0, 0))
         settingsButton = Button("Settings", self.__settings, Position.BOTTOM, Margin(50, 0, 0, 0), startButton)
-        quitButton = Button("Quit", self.__closeWindow, Position.BOTTOM, Margin(50, 0, 0, 0), settingsButton)
+        quitButton = Button("Quit", self.__window.close, Position.BOTTOM, Margin(50, 0, 0, 0), settingsButton)
         self.__buttons = [startButton, settingsButton, quitButton]
         self.__display.add(*self.__buttons)
 
@@ -47,9 +47,6 @@ class Menu:
     def __settings(self):
         print("settings")
 
-    def __closeWindow(self):
-        self.__running = False
-
     def __resize(self, event):
         self.__window.resize(event.w, event.h)
         self.__display.flip()
@@ -60,7 +57,8 @@ class Menu:
         while self.__running == States.CONTINUE:
             updated = False
             for event in pygame.event.get():
-                self.__running = self.__window.isClosed(event)
+                if self.__window.isClosed(event):
+                    self.__running = States.QUIT
 
                 if self.__window.isResized(event):
                     self.__resize(event)

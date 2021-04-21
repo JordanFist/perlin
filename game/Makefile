@@ -1,7 +1,7 @@
 all: main
 
-main: Main.py
-	python3 Main.py
+main: Perlin.py
+	python3 Perlin.py
 
-test : game/test/Village.py
+test: 
 	python3 -m game.test.MainTest

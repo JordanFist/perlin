@@ -1,7 +1,6 @@
 V1 idées
 =========
-1. Gros ralentissement, pourquoi ?
-2. Tester les bugs d'affichage, resize, etc
+1. Tester les bugs d'affichage, resize, etc
 
 TOFIX : 
     Sur windows : 

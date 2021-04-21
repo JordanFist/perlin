@@ -1,5 +1,5 @@
-from game.src.core.Map import Map
-from game.src.core.Tiles import Tiles
+from src.core.Map import Map
+from src.core.Tiles import Tiles
 from time import time
 from random import sample
 

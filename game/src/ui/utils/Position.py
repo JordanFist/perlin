@@ -1,7 +1,7 @@
 import pygame
 
-from game.src.ui.Window import Window
-from game.src.ui.utils.Margin import Margin
+from src.ui.Window import Window
+from src.ui.utils.Margin import Margin
 
 class Position:
     TOP = 0

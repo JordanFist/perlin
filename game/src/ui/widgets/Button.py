@@ -1,10 +1,10 @@
 import pygame
 
-from game.src.core.utils.Dimensions import Dimensions
-from game.src.core.utils.Coordinates import Coordinates
+from src.core.utils.Dimensions import Dimensions
+from src.core.utils.Coordinates import Coordinates
 
-from game.src.ui.widgets.Text import Text
-from game.src.ui.utils.Position import Position
+from src.ui.widgets.Text import Text
+from src.ui.utils.Position import Position
 
 class Button():
     LEFT_CLICK = 1

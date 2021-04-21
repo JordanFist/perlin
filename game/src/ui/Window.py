@@ -1,7 +1,8 @@
 import pygame
+import sys
 
-from game.src.core.utils.Dimensions import Dimensions
-from game.src.core.enums.States import States
+from src.core.utils.Dimensions import Dimensions
+from src.core.enums.States import States
 
 class Window:
     def __init__(self):
@@ -9,10 +10,12 @@ class Window:
         self.__INITIAL_HEIGHT = 720
         self.__MINIMUM_WIDTH = 600
         self.__MINIMUM_HEIGHT = 400
+        self.__ICON_PATH = "resources/icon/icon.png"
         self.__FPS = 244
         
         pygame.init()
         pygame.display.set_caption("Perlin")
+        pygame.display.set_icon(pygame.image.load(self.__ICON_PATH))
 
         self.__screen = pygame.display.set_mode((self.__INITIAL_WIDTH, self.__INITIAL_HEIGHT), pygame.RESIZABLE)
         self.__clock = pygame.time.Clock()
@@ -31,12 +34,12 @@ class Window:
 
     def isClosed(self, event):
         if event.type == pygame.QUIT:
-            return States.QUIT
-        return States.CONTINUE
+            return True
+        return False
 
     def close(self):
         pygame.quit()
-        quit()
+        sys.exit()
 
     def isResized(self, event):
         if event.type == pygame.VIDEORESIZE:

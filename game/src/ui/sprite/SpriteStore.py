@@ -1,12 +1,12 @@
 import glob, os
 
-from game.src.ui.sprite.Sprite import Sprite
+from src.ui.sprite.Sprite import Sprite
 
 class SpriteStore:
     MAIN_CHARACTER = 0
 
     def __init__(self):
-        self.__PATH = "game/resources/graphics/"
+        self.__PATH = "resources/graphics/"
         self.__store = {}
 
         self.load()

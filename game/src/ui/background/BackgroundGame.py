@@ -1,9 +1,9 @@
 import pygame
 
-from game.src.core.enums.Tiles import Tiles
-from game.src.core.utils.Converter import Converter
+from src.core.enums.Tiles import Tiles
+from src.core.utils.Converter import Converter
 
-from game.src.ui.background.Background import Background
+from src.ui.background.Background import Background
 
 class BackgroundGame(Background):
     def __init__(self, map, spriteStore):

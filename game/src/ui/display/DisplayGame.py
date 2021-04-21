@@ -1,6 +1,6 @@
 import pygame
 
-from game.src.ui.display.Display import Display
+from src.ui.display.Display import Display
 
 class DisplayGame(Display):
     def __init__(self, window, background, camera):

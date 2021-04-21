@@ -1,4 +1,4 @@
-from game.src.ui.Window import Window
+from src.ui.Window import Window
 
 class Camera:
     def __init__(self, player, mapSize):

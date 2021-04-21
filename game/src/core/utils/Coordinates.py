@@ -1,4 +1,4 @@
-from game.src.core.utils import Pair
+from src.core.utils import Pair
 
 class Coordinates(Pair.Pair):
     def __init__(self, x, y):

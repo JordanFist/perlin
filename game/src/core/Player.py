@@ -1,7 +1,7 @@
 from numpy import sqrt
 
-from game.src.core.enums.Direction import Direction
-from game.src.core.utils.Coordinates import Coordinates
+from src.core.enums.Direction import Direction
+from src.core.utils.Coordinates import Coordinates
 
 """ 
 The position of the player is represented by the top left corner position of his sprite 

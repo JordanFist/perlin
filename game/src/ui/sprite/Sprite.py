@@ -1,6 +1,6 @@
 import pygame
 
-from game.src.core.utils.Dimensions import Dimensions
+from src.core.utils.Dimensions import Dimensions
 
 class Sprite:
     GROUND_TILE_SIZE = 64

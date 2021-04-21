@@ -1,4 +1,4 @@
-from game.test.Village import Village
+from test.Village import Village
 
 class MainTest:
     def __init__(self):
@@ -6,3 +6,7 @@ class MainTest:
 
 if (__name__ == "__main__"):
     MainTest()
+
+
+
+    

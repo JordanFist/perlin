@@ -1,18 +1,18 @@
 import pygame
 
-from game.src.core.Map import Map
-from game.src.core.Player import Player
-from game.src.core.enums.Tiles import Tiles
-from game.src.core.enums.Direction import Direction
-from game.src.core.enums.States import States
-from game.src.core.utils.Coordinates import Coordinates
+from src.core.Map import Map
+from src.core.Player import Player
+from src.core.enums.Tiles import Tiles
+from src.core.enums.Direction import Direction
+from src.core.enums.States import States
+from src.core.utils.Coordinates import Coordinates
 
-from game.src.ui.Window import Window
-from game.src.ui.Camera import Camera
-from game.src.ui.display.DisplayGame import DisplayGame
-from game.src.ui.background.BackgroundGame import BackgroundGame
-from game.src.ui.sprite.Sprite import Sprite
-from game.src.ui.sprite.SpriteStore import SpriteStore
+from src.ui.Window import Window
+from src.ui.Camera import Camera
+from src.ui.display.DisplayGame import DisplayGame
+from src.ui.background.BackgroundGame import BackgroundGame
+from src.ui.sprite.Sprite import Sprite
+from src.ui.sprite.SpriteStore import SpriteStore
 
 class GameLoop:
     def __init__(self, window, seed=None):
@@ -60,16 +60,11 @@ class GameLoop:
         running = States.CONTINUE
         self.__display.flip()
 
-        count = 0
-        from time import time
-        start = time()
-
-        while running == States.CONTINUE:   
-            count += 1
-            
+        while running == States.CONTINUE:               
             updated = False
             for event in pygame.event.get():
-                running = self.__window.isClosed(event)
+                if self.__window.isClosed(event):
+                    running = States.QUIT
 
                 if self.__window.isResized(event):
                     self.__resize(event)
@@ -83,7 +78,6 @@ class GameLoop:
 
             self.__window.clock()    
 
-        print(count/(time()-start))
         
         if (running == States.QUIT):
             self.__window.close()

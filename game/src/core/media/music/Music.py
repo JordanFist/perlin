@@ -1,7 +1,7 @@
 import pygame
 
 class Music:
-    PATH = "game/resources/musics/"
+    PATH = "resources/musics/"
     EXTENSION = ".mp3"
     FADE_OUT = 5000
     VOLUME = 0.5

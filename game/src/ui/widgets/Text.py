@@ -1,8 +1,8 @@
 import pygame.freetype
 
-from game.src.core.utils.Dimensions import Dimensions
+from src.core.utils.Dimensions import Dimensions
 
-from game.src.ui.utils.Position import Position
+from src.ui.utils.Position import Position
 
 class Text:
     ZOOM = 1.2

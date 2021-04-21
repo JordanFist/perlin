@@ -1,6 +1,6 @@
 import pygame
 
-from game.src.ui.background.Background import Background
+from src.ui.background.Background import Background
 
 class BackgroundImage(Background):
     def __init__(self, path):

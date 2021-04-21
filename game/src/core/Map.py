@@ -2,9 +2,9 @@ from numpy import linspace, sqrt, inf, zeros, array
 from perlin_noise import PerlinNoise
 from numpy import array
 
-from game.src.core.utils.Dimensions import Dimensions
-from game.src.core.enums.Tiles import Tiles
-from game.src.core.utils.Converter import Converter
+from src.core.utils.Dimensions import Dimensions
+from src.core.enums.Tiles import Tiles
+from src.core.utils.Converter import Converter
 
 class Map:
     def __init__(self, seed=None):
