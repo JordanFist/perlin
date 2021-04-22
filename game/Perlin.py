@@ -3,8 +3,7 @@ from src.core.GameLoop import GameLoop
 from src.ui.Window import Window
 from src.ui.Menu import Menu
 
-
-class Main:
+class Perlin:
     def __init__(self):
         self.__SEED = 1
 
@@ -14,4 +13,4 @@ class Main:
         Menu(self.__window, self.__SEED)
 
 if (__name__ == "__main__"):
-    Main()
+    Perlin()
