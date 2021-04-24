@@ -2,9 +2,12 @@ import glob, os
 
 from src.ui.sprite.Sprite import Sprite
 
+"""
+The store dictionary contains the keys:
+    tiles -> referring to an array of tile sprites
+    player -> referring to an array of player sprites
+"""
 class SpriteStore:
-    MAIN_CHARACTER = 0
-
     def __init__(self):
         self.__PATH = "resources/graphics/"
         self.__store = {}
@@ -20,11 +23,11 @@ class SpriteStore:
                 sprite = Sprite(self.__PATH + folder + "/" + str(i) + ".png")
                 self.__store[folder].append(sprite)
 
-    def get(self, spriteType, spriteNumber):
-        return self.__store[spriteType][spriteNumber]
+    def getTiles(self, id):
+        return self.__store["tiles"][id]
 
     def getPlayer(self):
-        return self.__store["sprites"][self.MAIN_CHARACTER]
+        return self.__store["player"]
 
             
                     

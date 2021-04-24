@@ -1,5 +1,5 @@
 from src.core.Map import Map
-from src.core.Tiles import Tiles
+from src.core.enums.Tiles import Tiles
 from time import time
 from random import sample
 

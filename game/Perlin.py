@@ -8,9 +8,9 @@ class Perlin:
         self.__SEED = 1
 
         self.__window = Window()
-        #gameLoop = GameLoop(self.__window, self.__SEED)
-        #gameLoop.run()
-        Menu(self.__window, self.__SEED)
+        gameLoop = GameLoop(self.__window, self.__SEED)
+        gameLoop.run()
+        #Menu(self.__window, self.__SEED)
 
 if (__name__ == "__main__"):
     Perlin()

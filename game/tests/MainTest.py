@@ -1,4 +1,4 @@
-from test.Village import Village
+from tests.Village import Village
 
 class MainTest:
     def __init__(self):

@@ -7,7 +7,13 @@ class Pair:
         return (int(self._first), int(self._second))
 
     def __add__(self, pair):
+        if (type(pair) == int):
+            return type(self)(self._first + pair, self._second + pair)
         return type(self)(self._first + pair._first, self._second + pair._second)
+
+    def __radd__(self, pair):
+        if (type(pair) == int):
+            return type(self)(self._first + pair, self._second + pair)
 
     def __sub__(self, pair):
         return type(self)(self._first - pair._first, self._second - pair._second)
