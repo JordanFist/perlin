@@ -17,9 +17,9 @@ class BackgroundGame(Background):
 
         for row in range(len(map)):
             for col in range(len(map[0])):
-                value = map[row][col]
-                tile = self.__spriteStore.getTiles(Tiles.getID(value))
-                tilePosition = (Converter.indexToPixel(col), Converter.indexToPixel(row))
-                self._background.blit(tile.get(), tilePosition)
+                for patch in map[row][col].getPatches():
+                    tile = self.__spriteStore.getTiles(patch)
+                    tilePosition = (Converter.indexToPixel(col), Converter.indexToPixel(row))
+                    self._background.blit(tile.get(), tilePosition)
                 
         self._background = self._background.convert_alpha()

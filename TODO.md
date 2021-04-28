@@ -1,11 +1,10 @@
-V1 idées
-=========
-1. Tester les bugs d'affichage, resize, etc
+To improve:
+===========
+1. changer ONE_FRAME_DURATION lorsque le personnage cours (pywin32)
 
-TOFIX : 
-    Sur windows : 
-        Ne repaint pas au lancement du jeu
-
+To Fix:
+=======
+1. Hora ne charge pas l'image au lancement s'il ouvre une autre fenetre
 
 V2 idées
 ========

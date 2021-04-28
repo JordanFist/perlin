@@ -84,21 +84,20 @@ class Player:
 
     def update(self, position):
         self.__sprite.setPosition(position)
+    
+    def changeDirection(self, direction):
+        self.__direction = direction
 
     def move(self, direction, elapsedTime):
         if direction == Direction.UP:
-            self.__direction = Direction.UP
             self.__position.y -= self.__speed * elapsedTime
             self.__VelocityY -= 1
         if direction == Direction.DOWN:
-            self.__direction = Direction.DOWN
             self.__position.y += self.__speed * elapsedTime
             self.__VelocityY += 1
         if direction == Direction.LEFT:
-            self.__direction = Direction.LEFT
             self.__position.x -= self.__speed * elapsedTime
             self.__VelocityX -= 1
         if direction == Direction.RIGHT:
-            self.__direction = Direction.RIGHT
             self.__position.x += self.__speed * elapsedTime
             self.__VelocityX += 1

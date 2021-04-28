@@ -6,7 +6,9 @@ from src.core.enums.Direction import Direction
 from src.core.enums.States import States
 
 class Window:
-    ONE_FRAME_DURATION = 120
+    NORMAL_ONE_FRAME_DURATION = 125 #ms
+    RAPID_ONE_FRAME_DURATION = 105
+    ONE_FRAME_DURATION = NORMAL_ONE_FRAME_DURATION
 
     def __init__(self):
         self.__INITIAL_WIDTH = 1080
@@ -16,6 +18,7 @@ class Window:
         self.__ICON_PATH = "resources/icon/icon.png"
         self.__FPS = 300
         
+        pygame.mixer.pre_init(44100, -16, 2, 512)
         pygame.init()
         pygame.display.set_caption("Perlin")
         pygame.display.set_icon(pygame.image.load(self.__ICON_PATH))
@@ -35,7 +38,8 @@ class Window:
     def clock(self):
         self.__clock.tick(self.__FPS)
 
-    def getTicks(self):
+    @staticmethod
+    def getTicks():
         return pygame.time.get_ticks()
 
     def getFPS(self):

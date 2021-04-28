@@ -2,6 +2,7 @@ from numpy import linspace, sqrt, inf, zeros, array
 from perlin_noise import PerlinNoise
 from numpy import array
 
+from src.core.Node import Node
 from src.core.utils.Dimensions import Dimensions
 from src.core.enums.Tiles import Tiles
 from src.core.utils.Converter import Converter
@@ -21,7 +22,7 @@ class Map:
 
     def getType(self, position):
         row, col = (int(Converter.pixelToIndex(position.y)), int(Converter.pixelToIndex(position.x)))
-        return Tiles.getID(self.__map[row][col])
+        return self.__map[row][col].getTileID()
 
     """ Returns the size of the map in pixel """
     def getSize(self):
@@ -37,6 +38,7 @@ class Map:
         self.__map = self.__map - self.__GRADIENT_FACTOR * self.__circularGradient()
         mini, maxi = self.__minMax()
         self.__map = self.__bijection(mini, maxi)
+        self.__map = self.__intToNodes()
     
     """ Returns a circular gradient between 0 and 1 """
     def __circularGradient(self):
@@ -56,6 +58,15 @@ class Map:
         if (mini == maxi):
             raise Exception("mini can't be equal to maxi")
         return (self.__map - mini) / (maxi - mini)
+
+    def __intToNodes(self):
+        map = []
+        for i in range(self.__MAP_SIZE.height):
+            row = []
+            for j in range(self.__MAP_SIZE.width):
+                row.append(Node(Tiles.getPatches(self.__map, i, j)))
+            map.append(row)
+        return map
 
     def __perlinMap(self):
         noise1 = PerlinNoise(octaves = 3, seed = self.__seed)

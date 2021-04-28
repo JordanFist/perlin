@@ -1,7 +1,7 @@
 import pygame
 
 from src.core.GameLoop import GameLoop
-from src.core.media.music.Music import Music
+from src.core.media.Music import Music
 from src.core.enums.States import States
 
 from src.ui.background.BackgroundImage import BackgroundImage

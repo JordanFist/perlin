@@ -6,6 +6,7 @@ from src.core.enums.Tiles import Tiles
 from src.core.enums.Direction import Direction
 from src.core.enums.States import States
 from src.core.utils.Coordinates import Coordinates
+from src.core.media.Sound import Sound
 
 from src.ui.Window import Window
 from src.ui.Camera import Camera
@@ -29,6 +30,8 @@ class GameLoop:
         self.__display = DisplayGame(self.__window, self.__background, self.__camera)
         self.__display.add(self.__player)
 
+        self.__sound = Sound()
+
     def __resize(self, event):
         self.__window.resize(event.w, event.h)
         self.__camera.resetCamera()
@@ -47,19 +50,24 @@ class GameLoop:
         keys = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d]
         for key in keys:
             direction = Direction.keyToDir(key)
-            if keysPressed[key] and self.__canWalk(direction, elapsedTime):
-                self.__player.move(direction, elapsedTime)
+            if keysPressed[key]:
+                self.__player.changeDirection(direction)
                 hasMoved = self.__player.changeSprite(direction * Sprites.NUMBER_OF_ANIMATION_FRAMES + frame)
+                if self.__canWalk(direction, elapsedTime):
+                    self.__player.move(direction, elapsedTime)
 
-        if keysPressed[pygame.K_LSHIFT]: #//REVIEW update ONE_FRAME_DURATION while running
+        if keysPressed[pygame.K_LSHIFT]:
             self.__player.run()
+            Window.ONE_FRAME_DURATION = Window.RAPID_ONE_FRAME_DURATION
         if not keysPressed[pygame.K_LSHIFT]:
             self.__player.walk()
+            Window.ONE_FRAME_DURATION = Window.NORMAL_ONE_FRAME_DURATION
 
         if not hasMoved:
             hasMoved = self.__player.changeSprite()
-        
+
         self.__player.adjustPosition(elapsedTime)
+
         return hasMoved
 
     def run(self):
@@ -78,6 +86,7 @@ class GameLoop:
                 if self.__window.isResized(event):
                     self.__resize(event)
             
+            
             if self.__window.getTicks() > nextFrame:
                 frame = (frame + 1) % Sprites.NUMBER_OF_ANIMATION_FRAMES          
                 nextFrame += Window.ONE_FRAME_DURATION
@@ -85,6 +94,8 @@ class GameLoop:
             if self.__playerInteraction(pygame.key.get_pressed(), self.__window.getTime(), frame):
                 self.__display.toUpdate(self.__player)
                 updated = True
+
+            #self.__sound.play()
 
             if updated:
                 self.__display.update()
