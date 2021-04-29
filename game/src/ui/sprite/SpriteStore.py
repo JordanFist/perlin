@@ -12,9 +12,9 @@ class SpriteStore:
         self.__PATH = "resources/graphics/"
         self.__store = {}
 
-        self.load()
+        self.__load()
     
-    def load(self):
+    def __load(self):
         folders = [os.path.basename(folder) for folder in glob.glob(self.__PATH + "*")]
         for folder in folders:
             self.__store[folder] = {}

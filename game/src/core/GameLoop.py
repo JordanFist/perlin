@@ -52,6 +52,7 @@ class GameLoop:
             direction = Direction.keyToDir(key)
             if keysPressed[key]:
                 self.__player.changeDirection(direction)
+                self.__sound.footstep(self.__map.getType(Coordinates(*self.__player.getCorners().midbottom)))
                 hasMoved = self.__player.changeSprite(direction * Sprites.NUMBER_OF_ANIMATION_FRAMES + frame)
                 if self.__canWalk(direction, elapsedTime):
                     self.__player.move(direction, elapsedTime)
@@ -59,9 +60,11 @@ class GameLoop:
         if keysPressed[pygame.K_LSHIFT]:
             self.__player.run()
             Window.ONE_FRAME_DURATION = Window.RAPID_ONE_FRAME_DURATION
+            self.__sound.run()
         if not keysPressed[pygame.K_LSHIFT]:
             self.__player.walk()
             Window.ONE_FRAME_DURATION = Window.NORMAL_ONE_FRAME_DURATION
+            self.__sound.walk()
 
         if not hasMoved:
             hasMoved = self.__player.changeSprite()
@@ -95,10 +98,10 @@ class GameLoop:
                 self.__display.toUpdate(self.__player)
                 updated = True
 
-            #self.__sound.play()
-
             if updated:
                 self.__display.update()
+
+            self.__sound.sea(self.__map, self.__player)
 
             self.__window.clock()
         

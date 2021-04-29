@@ -57,7 +57,7 @@ class Player:
     def getNextCollision(self, direction, elapsedTime):
         pos = self.getNextPosition(direction, elapsedTime)
         nextCollision = pygame.Rect(pos.x + self.__sprite.COLLISION_MARGIN, pos.y + self.__sprite.COLLISION_MARGIN, 
-                        self.__sprite.getSize().width - 2 * self.__sprite.COLLISION_MARGIN, self.__sprite.getSize().height - 2 * self.__sprite.COLLISION_MARGIN)
+                                    self.__sprite.getSize().width - 2 * self.__sprite.COLLISION_MARGIN, self.__sprite.getSize().height - 2 * self.__sprite.COLLISION_MARGIN)
         return nextCollision
 
     def getSprite(self):
@@ -75,6 +75,11 @@ class Player:
             self.__idle = False
         self.__sprite.setPosition(Coordinates(*rect.topleft))
         return True
+
+    def getCorners(self):
+        pos = self.__position
+        return pygame.Rect( pos.x + self.__sprite.COLLISION_MARGIN, pos.y + self.__sprite.COLLISION_MARGIN, 
+                            self.__sprite.getSize().width - 2 * self.__sprite.COLLISION_MARGIN, self.__sprite.getSize().height - 2 * self.__sprite.COLLISION_MARGIN)
 
     def run(self):
         self.__speed = self.__RUNNING_SPEED
