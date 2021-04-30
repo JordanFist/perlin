@@ -1,9 +1,10 @@
 import pygame
 import glob, os
 from math import sqrt
-from random import choice
+from random import choice, randint
 from numpy import inf
 
+from src.core.utils.PathManager import PathManager
 from src.core.utils.Coordinates import Coordinates
 from src.core.utils.Indexes import Indexes
 from src.core.enums.Tiles import Tiles
@@ -13,13 +14,16 @@ class Sound:
     # Volume
     FOOTSTEP_VOLUME = 0.03
     SEA_VOLUME = 0.7
-    ENVIRONMENT_VOLUME = 1
+    SEAGULL_VOLUME = 0.3
+    BIRDS_VOLUME = 0.4
 
     # Waiting time before the next sound is played (in ms)
     NORMAL_FOOTSTEP = 240
     RUNNING_FOOTSTEP = 200
     NEXT_FOOTSTEP = NORMAL_FOOTSTEP
-    NEXT_SEA_CHECK = 200
+    NEXT_AMBIENT_UPDATE = 200
+    MINIMUM_NEXT_SEAGULL = 7000
+    MAXIMUM_NEXT_SEAGULL = 15000
 
     # Radius where the sea is audible
     AUDIBLE_SEA_RADIUS = 20
@@ -30,31 +34,36 @@ class Sound:
         self.__load()
         self.__setVolume()
 
-        self.__nextFootStep = 0
-        self.__nextSeaCheck = 0
+        self.__distanceFromSea = inf
 
-        self.__canHearSea = False
+        self.__nextFootStep = 0
+        self.__nextAmbientUpdate = 0
+        self.__nextSeagull = 0
+
+        self.__playingSeagull = None
+        self.__isBeachPlaying = False
+        self.__isBirdsPlaying = False
 
     def __load(self):
-        folders = [os.path.basename(folder) for folder in glob.glob(self.__PATH + "*")]
+        folders = [os.path.basename(folder) for folder in glob.glob(PathManager.addPath((self.__PATH + "*")))] 
         for folder in folders:
             self.__sounds[folder] = []
-            fileNames = [os.path.splitext(os.path.basename(fileName))[0] for fileName in glob.glob(self.__PATH + folder + "/" + "*")]
+            fileNames = [os.path.splitext(os.path.basename(fileName))[0] for fileName in glob.glob(PathManager.addPath(self.__PATH + folder + "/" + "*"))]
             for name in fileNames:
-                sound = pygame.mixer.Sound(self.__PATH + folder + "/" + name + ".mp3")
+                sound = pygame.mixer.Sound(PathManager.addPath(self.__PATH + folder + "/" + name + ".mp3"))
                 self.__sounds[folder].append(sound)
-
-    def walk(self):
-        self.NEXT_FOOTSTEP = self.NORMAL_FOOTSTEP
-
-    def run(self):
-        self.NEXT_FOOTSTEP = self.RUNNING_FOOTSTEP
 
     def __setVolume(self):
         for key in self.__sounds.keys():
             if key == str(Tiles.GRASS) or key == str(Tiles.SAND):
                 for sound in self.__sounds[key]:
                     sound.set_volume(self.FOOTSTEP_VOLUME)
+
+    def walk(self):
+        self.NEXT_FOOTSTEP = self.NORMAL_FOOTSTEP
+
+    def run(self):
+        self.NEXT_FOOTSTEP = self.RUNNING_FOOTSTEP
 
     def footstep(self, tile):
         if Window.getTicks() > self.__nextFootStep:
@@ -65,23 +74,67 @@ class Sound:
                 print("error can't play a sound for this tile")
             self.__nextFootStep = Window.getTicks() + self.NEXT_FOOTSTEP
 
-    def sea(self, map, player):
-        if Window.getTicks() > self.__nextSeaCheck:
-            distance = self.__distanceFromSea(map, player)
-            if self.__canHearSea:
-                if distance > self.AUDIBLE_SEA_RADIUS:
-                    self.__canHearSea = False
-                    self.__sounds["sea"][0].stop()
-                else:
-                    self.__sounds["sea"][0].set_volume(self.SEA_VOLUME - self.SEA_VOLUME/self.AUDIBLE_SEA_RADIUS * distance)
-            else:
-                if distance <= self.AUDIBLE_SEA_RADIUS:
-                    self.__canHearSea = True
-                    self.__sounds["sea"][0].play()
-                    self.__sounds["sea"][0].set_volume(self.SEA_VOLUME - self.SEA_VOLUME/self.AUDIBLE_SEA_RADIUS * distance)
-            self.__nextSeaCheck = Window.getTicks() + self.NEXT_SEA_CHECK
+    def beachVolumeSetter(self, maxVolume, distance):
+        return maxVolume - maxVolume / self.AUDIBLE_SEA_RADIUS * distance
 
-    def __distanceFromSea(self, map, player):
+    def natureVolumeSetter(self, maxVolume, distance):
+        return maxVolume - (self.AUDIBLE_SEA_RADIUS - self.__distanceFromSea) / 10
+
+    def canHearBeach(self):
+        if self.__distanceFromSea <= self.AUDIBLE_SEA_RADIUS:
+            return True
+        return False
+
+    def ambientManager(self, map, player):
+        if Window.getTicks() > self.__nextAmbientUpdate:
+            self.__distanceFromSea = self.__updateDistanceFromBeach(map, player)
+            self.birds()
+            self.beach()
+            self.seagull()
+            self.__nextAmbientUpdate = Window.getTicks() + self.NEXT_AMBIENT_UPDATE
+
+    def birds(self):
+        if self.__isBirdsPlaying:
+            if not self.canHearBeach():
+                self.__sounds["birds"][0].set_volume(self.BIRDS_VOLUME)
+            elif self.__distanceFromSea > 10:
+                self.__sounds["birds"][0].set_volume(self.natureVolumeSetter(self.BIRDS_VOLUME, self.__distanceFromSea))
+            else:
+                self.__sounds["birds"][0].stop()
+                self.__isBirdsPlaying = False
+        else:
+            if not self.canHearBeach():
+                self.__sounds["birds"][0].play(-1)
+                self.__sounds["birds"][0].set_volume(self.BIRDS_VOLUME)
+                self.__isBirdsPlaying = True
+            elif self.__distanceFromSea > 10:
+                self.__sounds["birds"][0].play(-1)
+                self.__sounds["birds"][0].set_volume(self.natureVolumeSetter(self.BIRDS_VOLUME, self.__distanceFromSea))
+                self.__isBirdsPlaying = True
+
+    def seagull(self):
+        if self.canHearBeach():
+            if Window.getTicks() > self.__nextSeagull:
+                self.__playingSeagull = choice(self.__sounds["seagull"])
+                self.__playingSeagull.set_volume(self.beachVolumeSetter(self.SEAGULL_VOLUME, self.__distanceFromSea))
+                self.__playingSeagull.play()
+                self.__nextSeagull = Window.getTicks() + randint(self.MINIMUM_NEXT_SEAGULL, self.MAXIMUM_NEXT_SEAGULL)
+            self.__playingSeagull.set_volume(self.beachVolumeSetter(self.SEAGULL_VOLUME, self.__distanceFromSea))
+
+    def beach(self):
+        if self.__isBeachPlaying:
+            if self.canHearBeach():
+                self.__sounds["beach"][0].set_volume(self.beachVolumeSetter(self.SEA_VOLUME, self.__distanceFromSea))
+            else:
+                self.__sounds["beach"][0].stop()
+                self.__isBeachPlaying = False
+        else:
+            if self.canHearBeach():
+                self.__sounds["beach"][0].play(-1)
+                self.__sounds["beach"][0].set_volume(self.beachVolumeSetter(self.SEA_VOLUME, self.__distanceFromSea))
+                self.__isBeachPlaying = True
+
+    def __updateDistanceFromBeach(self, map, player):
         pos = map.getIndex(Coordinates(*player.getCorners().midbottom))
         radius = 0
         visited = set()

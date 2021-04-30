@@ -1,5 +1,6 @@
 import glob, os
 
+from src.core.utils.PathManager import PathManager
 from src.ui.sprite.Sprite import Sprite
 
 """
@@ -15,10 +16,10 @@ class SpriteStore:
         self.__load()
     
     def __load(self):
-        folders = [os.path.basename(folder) for folder in glob.glob(self.__PATH + "*")]
+        folders = [os.path.basename(folder) for folder in glob.glob(PathManager.addPath(self.__PATH + "*"))]
         for folder in folders:
             self.__store[folder] = {}
-            fileNames = [os.path.splitext(os.path.basename(fileName))[0] for fileName in glob.glob(self.__PATH + folder + "/" + "*")]
+            fileNames = [os.path.splitext(os.path.basename(fileName))[0] for fileName in glob.glob(PathManager.addPath(self.__PATH + folder + "/" + "*"))]
             for i in fileNames:
                 sprite = Sprite(self.__PATH + folder + "/" + i + ".png")
                 self.__store[folder][int(i)] = sprite

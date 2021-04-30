@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+from src.core.utils.PathManager import PathManager
 from src.core.utils.Dimensions import Dimensions
 from src.core.enums.Direction import Direction
 from src.core.enums.States import States
@@ -21,7 +22,7 @@ class Window:
         pygame.mixer.pre_init(44100, -16, 2, 512)
         pygame.init()
         pygame.display.set_caption("Perlin")
-        pygame.display.set_icon(pygame.image.load(self.__ICON_PATH))
+        pygame.display.set_icon(pygame.image.load(PathManager.addPath(self.__ICON_PATH)))
 
         self.__screen = pygame.display.set_mode((self.__INITIAL_WIDTH, self.__INITIAL_HEIGHT), pygame.RESIZABLE)
         self.__clock = pygame.time.Clock()

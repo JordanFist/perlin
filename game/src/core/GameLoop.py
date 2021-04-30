@@ -101,7 +101,7 @@ class GameLoop:
             if updated:
                 self.__display.update()
 
-            self.__sound.sea(self.__map, self.__player)
+            self.__sound.ambientManager(self.__map, self.__player)
 
             self.__window.clock()
         
