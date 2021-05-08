@@ -15,7 +15,7 @@ class Sound:
     FOOTSTEP_VOLUME = 0.03
     SEA_VOLUME = 0.7
     SEAGULL_VOLUME = 0.3
-    BIRDS_VOLUME = 0.4
+    BIRDS_VOLUME = 0.5
 
     # Waiting time before the next sound is played (in ms)
     NORMAL_FOOTSTEP = 240
@@ -25,8 +25,9 @@ class Sound:
     MINIMUM_NEXT_SEAGULL = 7000
     MAXIMUM_NEXT_SEAGULL = 15000
 
-    # Radius where the sea is audible
+    # Audible Radius
     AUDIBLE_SEA_RADIUS = 20
+    AUDIBLE_BIRDS_RADIUS = 10
 
     def __init__(self):
         self.__PATH = "resources/sounds/"
@@ -77,8 +78,8 @@ class Sound:
     def beachVolumeSetter(self, maxVolume, distance):
         return maxVolume - maxVolume / self.AUDIBLE_SEA_RADIUS * distance
 
-    def natureVolumeSetter(self, maxVolume, distance):
-        return maxVolume - (self.AUDIBLE_SEA_RADIUS - self.__distanceFromSea) / 10
+    def birdsVolumeSetter(self, maxVolume, distance):
+        return (maxVolume / self.AUDIBLE_BIRDS_RADIUS) * (distance - self.AUDIBLE_BIRDS_RADIUS)
 
     def canHearBeach(self):
         if self.__distanceFromSea <= self.AUDIBLE_SEA_RADIUS:
@@ -95,21 +96,15 @@ class Sound:
 
     def birds(self):
         if self.__isBirdsPlaying:
-            if not self.canHearBeach():
-                self.__sounds["birds"][0].set_volume(self.BIRDS_VOLUME)
-            elif self.__distanceFromSea > 10:
-                self.__sounds["birds"][0].set_volume(self.natureVolumeSetter(self.BIRDS_VOLUME, self.__distanceFromSea))
+            if self.AUDIBLE_BIRDS_RADIUS < self.__distanceFromSea:
+                self.__sounds["birds"][0].set_volume(self.birdsVolumeSetter(self.BIRDS_VOLUME, min(self.__distanceFromSea, self.AUDIBLE_SEA_RADIUS)))
             else:
                 self.__sounds["birds"][0].stop()
                 self.__isBirdsPlaying = False
         else:
-            if not self.canHearBeach():
+            if self.AUDIBLE_BIRDS_RADIUS < self.__distanceFromSea:
                 self.__sounds["birds"][0].play(-1)
-                self.__sounds["birds"][0].set_volume(self.BIRDS_VOLUME)
-                self.__isBirdsPlaying = True
-            elif self.__distanceFromSea > 10:
-                self.__sounds["birds"][0].play(-1)
-                self.__sounds["birds"][0].set_volume(self.natureVolumeSetter(self.BIRDS_VOLUME, self.__distanceFromSea))
+                self.__sounds["birds"][0].set_volume(self.birdsVolumeSetter(self.BIRDS_VOLUME, min(self.__distanceFromSea, self.AUDIBLE_SEA_RADIUS)))
                 self.__isBirdsPlaying = True
 
     def seagull(self):
