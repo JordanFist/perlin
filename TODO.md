@@ -1,14 +1,16 @@
-To improve:
-===========
-1. changer ONE_FRAME_DURATION lorsque le personnage cours (pywin32)
-
 To Fix:
 =======
-1. Hora ne charge pas l'image au lancement s'il ouvre une autre fenetre
+1. Hora ne charge pas l'image au lancement s'il ouvre une autre fenetre (pywin32)
+2. Le joueur peut sortir en haut de la map (si la generation le permet) à voir comment gerer ca avec les maisons
+
+
+To improve:
+===========
+1. Peut on ameliorer les 3 class background et les 4 class display
+2. Revoir les fonts, color, size
 
 V2 idées
 ========
-0. TROUVER CES PUTAINS DE SPRITES ! FAUT QU'ON ARRETE LES CONNERIES ! 
 1. Villages, routes (Hora & Jo') :
     Villages : 
         Placer les villages : 
@@ -18,9 +20,7 @@ V2 idées
         Placer les chemins:
             - Algorithme A*
             - Algorithme Djikstra 
-    
-(2. Animation Personnage) ?
-
+            
 V3 idées
 ==========
 1. Décoration sur île  : 

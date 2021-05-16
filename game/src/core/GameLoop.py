@@ -9,6 +9,7 @@ from src.core.utils.Coordinates import Coordinates
 from src.core.media.Sound import Sound
 
 from src.ui.Window import Window
+from src.ui.Pause import Pause
 from src.ui.Camera import Camera
 from src.ui.display.DisplayGame import DisplayGame
 from src.ui.background.BackgroundGame import BackgroundGame
@@ -18,6 +19,8 @@ from src.ui.sprite.SpriteStore import SpriteStore
 
 class GameLoop:
     def __init__(self, window, seed=None):
+        self.__running = States.RUNNING
+
         self.__window = window
 
         self.__map = Map(seed) 
@@ -34,7 +37,7 @@ class GameLoop:
 
     def __resize(self, event):
         self.__window.resize(event.w, event.h)
-        self.__camera.resetCamera()
+        self.__camera.initCamera()
         self.__display.flip()
 
     def __canWalk(self, direction, elapsedTime):
@@ -66,6 +69,14 @@ class GameLoop:
             Window.ONE_FRAME_DURATION = Window.NORMAL_ONE_FRAME_DURATION
             self.__sound.walk()
 
+        if keysPressed[pygame.K_ESCAPE]:
+            self.__sound.pause()
+            pause = Pause(self.__window, self.__display)
+            self.__running = pause.run()
+            if self.__running == States.RUNNING:
+                self.__sound.unpause()
+                self.__display.flip()
+
         if not hasMoved:
             hasMoved = self.__player.changeSprite()
 
@@ -74,17 +85,16 @@ class GameLoop:
         return hasMoved
 
     def run(self):
-        running = States.CONTINUE
         self.__display.flip()
 
         nextFrame = self.__window.getTicks()
         frame = 0
 
-        while running == States.CONTINUE:               
+        while self.__running == States.RUNNING:               
             updated = False
             for event in pygame.event.get():
                 if self.__window.isClosed(event):
-                    running = States.QUIT
+                    self.__running = States.QUIT
 
                 if self.__window.isResized(event):
                     self.__resize(event)
@@ -104,6 +114,5 @@ class GameLoop:
             self.__sound.ambientManager(self.__map, self.__player)
 
             self.__window.clock()
-        
-        if (running == States.QUIT):
-            self.__window.close()
+
+        return States.get(self.__window, self.__running)

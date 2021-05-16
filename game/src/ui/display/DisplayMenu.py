@@ -18,7 +18,7 @@ class DisplayMenu(Display):
             self._window.getScreen().blit(widget.get(), widget.getRect()) #text as the same rect as its button so we can get the rect of the button
         pygame.display.update()
 
-    def update(self):
+    """def update(self):
         rectToUpdate = []
         self.updateBackground()
         for widget in self._objectsToUpdate:
@@ -27,4 +27,4 @@ class DisplayMenu(Display):
             rectToUpdate.append(widget.getRect())
             self._window.getScreen().blit(widget.get(), widget.getRect())
         pygame.display.update(rectToUpdate)
-        self._objectsToUpdate = []
+        self._objectsToUpdate = []"""

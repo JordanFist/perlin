@@ -15,7 +15,9 @@ class Button():
         self.__position = position
         self.__relative = relative
         self.__margin = margin
-        self.__rect = Position.getRect(position, self.__text.getSize(), margin, relative)
+        self.__rect = None
+        self.__relativeRect = None
+        self.initRect()
 
         self.__function = function
         self.__clicked = False
@@ -33,6 +35,11 @@ class Button():
 
     def getRect(self):
         return self.__rect
+
+    def initRect(self):
+        if self.__relative:
+            self.__relativeRect = pygame.Rect(self.__relative.getPosition().toTuple(), self.__relative.getSize().toTuple())
+        self.__rect = Position.getRect(self.__position, self.__text.getSize(), self.__margin, self.__relativeRect)
     
     def checkHover(self):
         if self.__rect.collidepoint(pygame.mouse.get_pos()):
@@ -69,6 +76,6 @@ class Button():
         else:
             self.__text.default()
 
-        self.__rect = Position.getRect(self.__position, self.__text.getSize(), self.__margin, self.__relative)
+        self.__rect = Position.getRect(self.__position, self.__text.getSize(), self.__margin, self.__relativeRect)
         textPosition = self.getPosition() + self.getSize() // 2 -  self.__text.getSize() // 2
         self.__text.update(textPosition)

@@ -1,15 +1,16 @@
 import pygame.freetype
 
 from src.core.utils.Dimensions import Dimensions
+from src.core.utils.PathManager import PathManager
 
 from src.ui.utils.Position import Position
 
 class Text:
     ZOOM = 1.2
-    DEFAULT_FONT_SIZE = 30
-    HIGHLIGHTED_FONT_SIZE = DEFAULT_FONT_SIZE * ZOOM
-    FONT = "georgia"
-    DEFAULT_COLOR = "gold"
+    DEFAULT_FONT_SIZE = 45
+    HIGHLIGHTED_FONT_SIZE = int(DEFAULT_FONT_SIZE * ZOOM)
+    PATH = "resources/fonts/"
+    DEFAULT_COLOR = "white"
 
     def __init__(self, message, position=None, margin=None):
         self.__message = message
@@ -40,8 +41,8 @@ class Text:
         self.__createSurface(self.DEFAULT_FONT_SIZE)
 
     def __createSurface(self, size): 
-        font = pygame.freetype.SysFont(self.FONT, size, bold=True)
-        surface, _ = font.render(self.__message, fgcolor=self.DEFAULT_COLOR)
+        font = pygame.font.Font(PathManager.addPath(self.PATH + "bringBackJustice.otf"), size)
+        surface = font.render(self.__message, True, self.DEFAULT_COLOR)
         self.__text = surface.convert_alpha()
         self.__rect = self.__text.get_rect()
 

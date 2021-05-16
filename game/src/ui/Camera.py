@@ -6,7 +6,7 @@ class Camera:
         self.__mapSize = mapSize
         self.__hasMoved = False
         self.__camera = None
-        self.resetCamera()
+        self.initCamera()
     
     """ Returns the camera top left coordinates """
     def get(self):
@@ -34,7 +34,7 @@ class Camera:
     def hasMoved(self):
         return self.__hasMoved
 
-    def resetCamera(self):
+    def initCamera(self):
         self.__camera = self.__player.getPosition() + self.__player.getSprite().getSize() // 2 - Window.getSize() // 2
         self.__camera.x = min(self.__mapSize.width - Window.getSize().width, max(0, self.__camera.x))
         self.__camera.y = min(self.__mapSize.height - Window.getSize().height, max(0, self.__camera.y))

@@ -66,6 +66,12 @@ class Sound:
     def run(self):
         self.NEXT_FOOTSTEP = self.RUNNING_FOOTSTEP
 
+    def pause(self):
+        pygame.mixer.pause()
+
+    def unpause(self):
+        pygame.mixer.unpause()
+
     def footstep(self, tile):
         if Window.getTicks() > self.__nextFootStep:
             try:

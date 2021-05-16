@@ -15,14 +15,18 @@ class Position:
     CENTER = 8
 
     @classmethod
-    def getRect(cls, position, size, margin=None, relative=None):
+    def getRect(cls, position, size, margin=None, relativeRect=None):
         rect = None
         if not margin:
             margin = Margin(0, 0, 0, 0)
-        if relative:
+        if relativeRect:
+            if (position == cls.TOP):
+                rect = pygame.Rect( relativeRect.x + relativeRect.width // 2 - size.width // 2 - margin.right + margin.left,
+                                    relativeRect.y - size.height // 2 + margin.top - margin.bottom, 
+                                    size.width, size.height) 
             if (position == cls.BOTTOM):
-                rect = pygame.Rect( relative.getPosition().x + relative.getSize().width // 2 - size.width // 2 - margin.right + margin.left,
-                                    relative.getPosition().y + relative.getSize().height + margin.top - margin.bottom, 
+                rect = pygame.Rect( relativeRect.x + relativeRect.width // 2 - size.width // 2 - margin.right + margin.left,
+                                    relativeRect.y + relativeRect.height - size.height // 2 + margin.top - margin.bottom, 
                                     size.width, size.height) 
         else:
             if (position == cls.CENTER):

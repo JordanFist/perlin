@@ -12,13 +12,14 @@ class DisplayGame(Display):
         topLeft = self._window.getScreen().get_rect(topleft = cameraPosition.toTuple())
         self._window.getScreen().blit(self._background.get(), (0, 0), topLeft)
 
-    def flip(self):
+    def flip(self, pause=False):
         cameraPosition = self.__camera.get()
         self.updateBackground(cameraPosition)
         for character in self._objectsOnScreen:
             character.update(character.getPosition() - cameraPosition)
             self._window.getScreen().blit(character.getSprite().get(), character.getSprite().getRect())
-        pygame.display.update()
+        if not pause:
+            pygame.display.update()
 
     def update(self):
         rectToUpdate = []

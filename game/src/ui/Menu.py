@@ -18,7 +18,7 @@ class Menu:
         self.__background = BackgroundImage("resources/backgrounds/menuBackground.png")
         self.__display = DisplayMenu(self.__window, self.__background)
 
-        self.__running = States.CONTINUE
+        self.__running = States.RUNNING
         self.__buttons = []
         self.__initWidget()
         Music.play("Celestial", -1)
@@ -27,13 +27,13 @@ class Menu:
 
     def __initWidget(self):
         startButton = Button("New Game", self.__newGame, Position.CENTER, Margin(50, 0, 0, 0))
-        settingsButton = Button("Settings", self.__settings, Position.BOTTOM, Margin(50, 0, 0, 0), startButton)
-        quitButton = Button("Quit", self.__window.close, Position.BOTTOM, Margin(50, 0, 0, 0), settingsButton)
+        settingsButton = Button("Settings", self.__settings, Position.BOTTOM, Margin(70, 0, 0, 0), startButton)
+        quitButton = Button("Quit", self.__window.close, Position.BOTTOM, Margin(70, 0, 0, 0), settingsButton)
         self.__buttons = [startButton, settingsButton, quitButton]
         self.__display.add(*self.__buttons)
 
     def __loading(self):
-        loading = Text("Loading...", Position.BOTTOM, Margin(0, 0, 50, 0))
+        loading = Text("Loading", Position.BOTTOM, Margin(0, 0, 50, 0))
         self.__display.clean()
         self.__display.add(loading)
         self.__display.flip()
@@ -43,19 +43,23 @@ class Menu:
         self.__loading()
         gameLoop = GameLoop(self.__window, self.__seed)
         self.__running = gameLoop.run()
+        self.__display.clean()
+        self.__initWidget()
+        self.__display.flip()
 
     def __settings(self):
         print("settings")
 
     def __resize(self, event):
         self.__window.resize(event.w, event.h)
+        for button in self.__buttons:
+            button.initRect()
         self.__display.flip()
 
     def run(self):
         self.__display.flip()
 
-        while self.__running == States.CONTINUE:
-            updated = False
+        while self.__running == States.RUNNING:
             for event in pygame.event.get():
                 if self.__window.isClosed(event):
                     self.__running = States.QUIT
@@ -68,12 +72,8 @@ class Menu:
 
             for button in self.__buttons:
                 if button.checkHover():
-                    self.__display.toUpdate(button)
-                    updated = True
-            
-            if updated:
-                self.__display.update()
+                    self.__display.flip()
 
             self.__window.clock() 
 
-        self.__window.close()
+        return States.get(self.__window, self.__running)
