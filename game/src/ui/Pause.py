@@ -4,7 +4,7 @@ from time import sleep
 from src.core.enums.States import States
 
 from src.ui.background.BackgroundImage import BackgroundImage
-from src.ui.display.DisplayPause import DisplayPause
+from src.ui.display.DisplayMenu import DisplayMenu
 from src.ui.utils.Position import Position
 from src.ui.widgets.Button import Button
 from src.ui.utils.Margin import Margin
@@ -18,7 +18,7 @@ class Pause:
         self.__window = window
         self.__background = BackgroundImage("resources/backgrounds/pauseBackground.png")
 
-        self.__display = DisplayPause(self.__window, self.__background, displayGame)
+        self.__display = DisplayMenu(self.__window, self.__background, displayGame)
         self.__buttons = []
         self.__initWidget()
 
